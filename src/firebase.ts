@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
+  initializeFirestore,
   collection,
   addDoc,
   getDocs,
   enableIndexedDbPersistence,
+  CACHE_SIZE_UNLIMITED,
 } from "firebase/firestore";
 import type { Question } from "./models/Question.model";
 
@@ -19,7 +20,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+});
 
 enableIndexedDbPersistence(db);
 
