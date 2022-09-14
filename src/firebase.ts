@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import type { Question } from "./models/Question.model";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAztfGwIasnPyTjHFVgrLQGXqRZCxIWcJU",
@@ -14,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-export const addQuestion = async (question) => {
+export const addQuestion = async (question: Question) => {
   try {
     const docRef = await addDoc(collection(db, "questions"), question);
     console.log("Document written with ID: ", docRef.id);
@@ -26,12 +27,12 @@ export const addQuestion = async (question) => {
 export const getAllQuestions = async () => {
   const querySnapshot = await getDocs(collection(db, "questions"));
 
-  const allDocs = [];
+  const allDocs: Question[] = [];
   querySnapshot.forEach((doc) => {
     allDocs.push({
       id: doc.id,
       ...doc.data(),
-    });
+    } as Question);
   });
 
   return allDocs;

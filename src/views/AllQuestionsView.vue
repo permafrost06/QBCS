@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { getAllQuestions } from "../firebase";
+import type { Question } from "@/models/Question.model";
 
-const allQuestions = ref([]);
+const allQuestions = ref([] as Question[]);
 
 const loadQuestions = async () => {
   allQuestions.value = await getAllQuestions();
@@ -18,7 +19,7 @@ loadQuestions();
       <button>Add New Question</button>
     </RouterLink>
     <div class="question" v-for="question in allQuestions" :key="question.id">
-      <div>Question: {{ question.question }}</div>
+      <div>Question: {{ question.text }}</div>
       <div>Answer: {{ question.answer }}</div>
       <div>Option 1: {{ question.opt1 }}</div>
       <div>Option 2: {{ question.opt2 }}</div>

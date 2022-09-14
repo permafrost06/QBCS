@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
+import type { Question } from "@/models/Question.model";
 import { ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { addQuestion } from "../firebase";
 
-const newQuestion = ref({});
+const newQuestion = ref({} as Question);
 
 const router = useRouter();
 
@@ -15,7 +16,7 @@ const handleAddQuestion = async () => {
 
 <template>
   <div class="question-container">
-    <input type="text" v-model="newQuestion.question" placeholder="Question" />
+    <input type="text" v-model="newQuestion.text" placeholder="Question" />
     <input type="text" v-model="newQuestion.answer" placeholder="Answer" />
     <input type="text" v-model="newQuestion.opt1" placeholder="Option 1" />
     <input type="text" v-model="newQuestion.opt2" placeholder="Option 2" />
@@ -31,9 +32,8 @@ const handleAddQuestion = async () => {
 .question-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   gap: 0.3rem;
-
-  width: 20vw;
 }
 </style>
