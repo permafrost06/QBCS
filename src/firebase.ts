@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  enableIndexedDbPersistence,
+} from "firebase/firestore";
 import type { Question } from "./models/Question.model";
 
 const firebaseConfig = {
@@ -14,6 +20,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+
+enableIndexedDbPersistence(db);
 
 export const addQuestion = async (question: Question) => {
   try {
