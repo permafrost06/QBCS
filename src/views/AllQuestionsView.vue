@@ -28,12 +28,20 @@ loadQuestions();
   </div>
 </template>
 
-<style>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 0.5rem;
+}
+
 .question {
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   border: 1px solid black;
-  width: 20vw;
-  padding: 0.5rem;
-  border-radius: 0.75rem;
+  width: 20rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
 }
 </style>
