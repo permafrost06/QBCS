@@ -5,4 +5,7 @@ export interface Question {
   opt1: string;
   opt2: string;
   opt3: string;
+  owner: string;
+  category: string;
+  tags: Array<string>;
 }
