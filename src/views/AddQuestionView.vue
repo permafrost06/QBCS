@@ -93,7 +93,7 @@ const quesFormSchema = ref([
     $formkit: 'text',
     name: 'tags',
     label: 'প্রশ্নের ট্যাগ',
-    help: 'একাধিক ট্যাগ কমা দিয়ে আলাদা করুন। যেমন: "গুরুত্বপুর্ণ, সাম্প্রতিক"। সর্বোচ্চ ৫টি',
+    help: 'একাধিক ট্যাগ কমা দিয়ে আলাদা করুন। যেমন: "গুরুত্বপুর্ণ, সাম্প্রতিক"।',
     validation: 'validateTags|maxTags',
     validationRules: { validateTags, maxTags },
     validationMessages: {
