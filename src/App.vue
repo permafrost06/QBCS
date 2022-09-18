@@ -6,7 +6,19 @@ import NavComponent from "./components/NavComponent.vue";
 <template>
   <div>
     <NavComponent />
-    <RouterView class="router-view" />
+    <RouterView class="router-view" v-slot="{ Component }">
+      <template v-if="Component">
+        <Transition mode="out-in">
+          <KeepAlive>
+            <Suspense>
+              <component :is="Component"></component>
+
+              <template #fallback> Loading... </template>
+            </Suspense>
+          </KeepAlive>
+        </Transition>
+      </template>
+    </RouterView>
   </div>
 </template>
 
