@@ -2,7 +2,7 @@
 import type { Question } from "@/models/Question.model";
 import type { FormKitNode } from "@formkit/core";
 import { ref } from "vue";
-import { useRouter, RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 import { addQuestion } from "../firebase";
 
 const categories = ref([ 

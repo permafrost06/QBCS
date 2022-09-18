@@ -1,8 +1,16 @@
+<script setup lang="ts">
+import { RouterLink } from "vue-router";
+</script>
+
 <template>
   <ul>
-    <li>All Questions</li>
-    <li>Add Question</li>
-    <li>Profile</li>
+    <RouterLink :to="{ name: 'All Questions' }">
+      <li>ব্রাউজ</li>
+    </RouterLink>
+    <RouterLink :to="{ name: 'Add Question' }">
+      <li>+</li>
+    </RouterLink>
+    <li>টেস্ট</li>
   </ul>
 </template>
 
@@ -20,10 +28,16 @@ ul {
   margin: 0;
   background: white;
   z-index: 999;
+  background-color: hsl(211, 48%, 81%);
 }
 
 li {
-  padding: 0;
-  margin: 0;
+  padding: .5rem;
+  margin-inline: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>
