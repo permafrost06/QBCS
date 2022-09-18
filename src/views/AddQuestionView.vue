@@ -23,7 +23,7 @@ const validateTags = ({value}: FormKitNode) => {
 const maxTags = ({value}: FormKitNode) => {
   const tags = (value as string).split(",");
 
-  if (tags.length > 5) {
+  if (tags.length > 20) {
     return false;
   }
 
@@ -98,7 +98,7 @@ const quesFormSchema = ref([
     validationRules: { validateTags, maxTags },
     validationMessages: {
       validateTags: 'ট্যাগ সঠিকভাবে লিখুন',
-      maxTags: 'সর্বোচ্চ ৫টি ট্যাগ গ্রহণযোগ্য'
+      maxTags: 'সর্বোচ্চ ২০টি ট্যাগ গ্রহণযোগ্য'
     },
     validationVisibility: 'live'
   }
