@@ -10,7 +10,9 @@ import { RouterLink } from "vue-router";
     <RouterLink :to="{ name: 'Add Question' }">
       <li>+</li>
     </RouterLink>
-    <li>টেস্ট</li>
+    <RouterLink :to="{ name: 'Test' }">
+      <li>টেস্ট</li>
+    </RouterLink>
   </ul>
 </template>
 
