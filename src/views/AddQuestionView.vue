@@ -3,12 +3,16 @@ import type { Question } from "@/models/Question.model";
 import type { FormKitNode } from "@formkit/core";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { addQuestion } from "../firebase";
+import { addQuestion, getCategories } from "../firebase";
 
-const categories = ref([
-  { label: "ন্যাশনাল", value: "national" },
-  { label: "ইন্টারন্যাশনাল", value: "intl" },
-]);
+const categories = ref();
+
+const loadCategories = async () => {
+  const cats = await getCategories();
+  categories.value = Array.from(cats, ([value, label]) => ({ value, label }));
+};
+
+await loadCategories();
 
 const validateTags = ({ value }: FormKitNode) => {
   const tags = (value as string).split(",");

@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
-import { getAllQuestions } from "../firebase";
+import { getAllQuestions, getCategories } from "@/firebase";
 import type { Question } from "@/models/Question.model";
 
 const allQuestions = ref([] as Question[]);
+const categories = ref();
 
 const loadQuestions = async () => {
   allQuestions.value = await getAllQuestions();
 };
 
+const loadCategories = async () => {
+  categories.value = await getCategories();
+};
+
+loadCategories();
 loadQuestions();
+
+const getCategoryLabel = (category: string): string => {
+  if (category) return categories.value.get(category);
+  else return "Uncategorized";
+};
 
 const printTags = (tags: string[]): string => {
   if (tags) return tags.join(", ");
@@ -22,16 +32,13 @@ const printTags = (tags: string[]): string => {
   <div class="container">
     <h1>সব প্রশ্ন</h1>
     <div class="question" v-for="question in allQuestions" :key="question.id">
-      <!-- <div>প্রশ্ন: {{ question.text }}</div>
-      <div>উত্তর: {{ question.answer }}</div>
-      <div>অপশন ১: {{ question.opt1 }}</div>
-      <div>অপশন ২: {{ question.opt2 }}</div>
-      <div>অপশন ৩: {{ question.opt3 }}</div> -->
       <div class="text">{{ question.text }}</div>
       <div>{{ question.answer }}</div>
       <div class="meta">
         <div class="category">
-          <span class="category-text">{{ question.category }}</span>
+          <span class="category-text">{{
+            getCategoryLabel(question.category)
+          }}</span>
         </div>
         <div class="tags">{{ printTags(question.tags) }}</div>
       </div>
@@ -49,7 +56,6 @@ const printTags = (tags: string[]): string => {
 }
 
 .question {
-  /* margin-bottom: 1rem; */
   border: 1px solid hsl(0, 0%, 70%);
   width: 20rem;
   padding: 0.5rem 0.75rem;
