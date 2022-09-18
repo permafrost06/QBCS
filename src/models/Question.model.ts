@@ -7,5 +7,5 @@ export interface Question {
   opt3: string;
   owner: string;
   category: string;
-  tags: string|Array<string>;
+  tags: Array<string>;
 }

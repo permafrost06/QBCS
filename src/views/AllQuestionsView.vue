@@ -11,6 +11,11 @@ const loadQuestions = async () => {
 };
 
 loadQuestions();
+
+const printTags = (tags: string[]): string => {
+  if (tags) return tags.join(", ");
+  else return "";
+};
 </script>
 
 <template>
@@ -24,6 +29,12 @@ loadQuestions();
       <div>অপশন ৩: {{ question.opt3 }}</div> -->
       <div class="text">{{ question.text }}</div>
       <div>{{ question.answer }}</div>
+      <div class="meta">
+        <div class="category">
+          <span class="category-text">{{ question.category }}</span>
+        </div>
+        <div class="tags">{{ printTags(question.tags) }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -44,8 +55,30 @@ loadQuestions();
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
 
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+
+  .category {
+    .category-text {
+      font-size: 0.8rem;
+      border: 1px solid hsl(0, 0%, 95%);
+      padding: 0.1rem 0.2rem;
+      background-color: hsl(0, 0%, 95%);
+      border-radius: 0.25rem;
+    }
+  }
+
   .text {
     font-weight: 700;
+  }
+
+  .tags {
+    text-align: right;
+    font-size: 0.8rem;
+    color: hsl(0, 0%, 40%);
   }
 }
 </style>
