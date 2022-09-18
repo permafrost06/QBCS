@@ -34,7 +34,7 @@ ul {
 }
 
 li {
-  padding: .5rem;
+  padding: 0.5rem;
   margin-inline: 1rem;
 }
 
