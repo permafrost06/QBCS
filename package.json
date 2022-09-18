@@ -10,6 +10,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@formkit/themes": "^1.0.0-beta.10",
+    "@formkit/vue": "^1.0.0-beta.10",
     "firebase": "^9.9.4",
     "pinia": "^2.0.21",
     "vue": "^3.2.38",

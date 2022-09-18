@@ -1,14 +1,116 @@
 <script setup lang="ts">
 import type { Question } from "@/models/Question.model";
+import type { FormKitNode } from "@formkit/core";
 import { ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { addQuestion } from "../firebase";
+
+const categories = ref([ 
+  { label: 'ন্যাশনাল', value: 'national' },
+  { label: 'ইন্টারন্যাশনাল', value: 'intl' }
+]);
+
+const validateTags = ({value}: FormKitNode) => {
+  const tags = (value as string).split(",");
+
+  if (!tags.length) {
+    return false;
+  }
+
+  return true;
+}
+
+const maxTags = ({value}: FormKitNode) => {
+  const tags = (value as string).split(",");
+
+  if (tags.length > 5) {
+    return false;
+  }
+
+  return true;
+}
+
+const quesFormSchema = ref([ 
+  {
+    $formkit: 'text',
+    name: 'text',
+    label: 'প্রশ্ন',
+    // help: 'আপনার প্রশ্ন টি লিখুন',
+    validation: 'required',
+    validationMessages: {
+      required: "প্রশ্ন ফিল্ডটি বাধ্যতামূলক"
+    }
+  },
+  {
+    $formkit: 'text',
+    name: 'answer',
+    label: 'উত্তর',
+    // help: 'প্রশ্নের সঠিক উত্তরটি লিখুন',
+    validation: 'required',
+    validationMessages: {
+      required: "উত্তর ফিল্ডটি বাধ্যতামূলক"
+    }
+  },
+  {
+    $formkit: 'text',
+    name: 'opt1',
+    label: 'অপশন ১',
+    help: 'প্রশ্নটির জন্য একটি (ভুল) অপশন লিখুন',
+    validation: 'required',
+    validationMessages: {
+      required: "অপশন ১ ফিল্ডটি বাধ্যতামূলক"
+    }
+  },
+  {
+    $formkit: 'text',
+    name: 'opt2',
+    label: 'অপশন ২',
+    help: 'প্রশ্নটির জন্য একটি (ভুল) অপশন লিখুন',
+    validation: 'required',
+    validationMessages: {
+      required: "অপশন ২ ফিল্ডটি বাধ্যতামূলক"
+    }
+  },
+  {
+    $formkit: 'text',
+    name: 'opt3',
+    label: 'অপশন ৩',
+    help: 'প্রশ্নটির জন্য একটি (ভুল) অপশন লিখুন',
+    validation: 'required',
+    validationMessages: {
+      required: "অপশন ৩ ফিল্ডটি বাধ্যতামূলক"
+    }
+  },
+  {
+    $formkit: 'select',
+    name: 'category',
+    label: 'ক্যাটাগরি',
+    // help: 'প্রশ্নের ক্যাটাগরি সিলেক্ট করুন',
+    options: categories,
+    validation: 'required',
+  },
+  {
+    $formkit: 'text',
+    name: 'tags',
+    label: 'প্রশ্নের ট্যাগ',
+    help: 'একাধিক ট্যাগ কমা দিয়ে আলাদা করুন। যেমন: "গুরুত্বপুর্ণ, সাম্প্রতিক"। সর্বোচ্চ ৫টি',
+    validation: 'validateTags|maxTags',
+    validationRules: { validateTags, maxTags },
+    validationMessages: {
+      validateTags: 'ট্যাগ সঠিকভাবে লিখুন',
+      maxTags: 'সর্বোচ্চ ৫টি ট্যাগ গ্রহণযোগ্য'
+    },
+    validationVisibility: 'live'
+  }
+]);
 
 const newQuestion = ref({} as Question);
 
 const router = useRouter();
 
 const handleAddQuestion = async () => {
+  newQuestion.value.tags = (newQuestion.value.tags as string).split(",").map(tag => tag.trim());
+
   addQuestion(newQuestion.value);
   router.push({ name: "All Questions" });
 };
@@ -16,15 +118,9 @@ const handleAddQuestion = async () => {
 
 <template>
   <div class="question-container">
-    <input type="text" v-model="newQuestion.text" placeholder="Question" />
-    <input type="text" v-model="newQuestion.answer" placeholder="Answer" />
-    <input type="text" v-model="newQuestion.opt1" placeholder="Option 1" />
-    <input type="text" v-model="newQuestion.opt2" placeholder="Option 2" />
-    <input type="text" v-model="newQuestion.opt3" placeholder="Option 3" />
-    <button @click="handleAddQuestion">Add Question</button>
-    <RouterLink :to="{ name: 'All Questions' }">
-      <button>Cancel</button>
-    </RouterLink>
+    <FormKit type="form" submit-label="সাবমিট" v-model="newQuestion" @submit="handleAddQuestion">
+      <FormKitSchema :schema="quesFormSchema" />
+    </FormKit>
   </div>
 </template>
 
