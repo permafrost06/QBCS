@@ -15,6 +15,6 @@ import NavComponent from "./components/NavComponent.vue";
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   }
   .router-view {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
   }
 </style>
