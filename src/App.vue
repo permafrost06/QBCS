@@ -5,14 +5,13 @@ import NavComponent from "./components/NavComponent.vue";
 
 <template>
   <div>
-    <NavComponent />
+    <NavComponent class="navigation" />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
         <Transition mode="out-in">
           <KeepAlive>
             <Suspense>
               <component :is="Component"></component>
-
               <template #fallback> Loading... </template>
             </Suspense>
           </KeepAlive>
@@ -22,11 +21,17 @@ import NavComponent from "./components/NavComponent.vue";
   </div>
 </template>
 
-<style scoped>
+<style>
 body,
 * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
 }
 .router-view {
   margin-bottom: 4rem;

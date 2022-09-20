@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseError, initializeApp } from "firebase/app";
 import {
   initializeFirestore,
   collection,
@@ -11,6 +11,7 @@ import {
   updateDoc,
   setDoc,
 } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import type { Question } from "./models/Question.model";
 
 const firebaseConfig = {
@@ -23,6 +24,16 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+const auth = getAuth();
+
+export const firebaseLogin = async (username: string, password: string) => {
+  try {
+    return await signInWithEmailAndPassword(auth, username, password);
+  } catch (error) {
+    throw new Error((error as FirebaseError).message);
+  }
+};
 
 const db = initializeFirestore(app, {
   cacheSizeBytes: CACHE_SIZE_UNLIMITED,
