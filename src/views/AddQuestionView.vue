@@ -113,7 +113,7 @@ const newQuestion = ref({} as Question);
 const router = useRouter();
 
 const handleAddQuestion = async () => {
-  newQuestion.value.tags = (newQuestion.value.tags as string)
+  newQuestion.value.tags = (newQuestion.value.tags as unknown as string)
     .split(",")
     .map((tag) => tag.trim());
 
