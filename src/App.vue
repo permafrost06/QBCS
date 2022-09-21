@@ -1,6 +1,28 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import { watch } from "vue";
+import { RouterView, useRoute, useRouter } from "vue-router";
 import NavComponent from "./components/NavComponent.vue";
+import { useUserStore } from "./stores/userStore";
+
+const route = useRoute();
+const router = useRouter();
+
+const userStore = useUserStore();
+
+watch(
+  () => route.name,
+  (path) => {
+    if (path !== "Log in") {
+      if (userStore.userCreds) {
+        if (!userStore.userCreds.user) {
+          router.push({ name: "Log in" });
+        }
+      } else {
+        router.push({ name: "Log in" });
+      }
+    }
+  }
+);
 </script>
 
 <template>
@@ -8,14 +30,10 @@ import NavComponent from "./components/NavComponent.vue";
     <NavComponent class="navigation" />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
-        <Transition mode="out-in">
-          <KeepAlive>
-            <Suspense>
-              <component :is="Component"></component>
-              <template #fallback> Loading... </template>
-            </Suspense>
-          </KeepAlive>
-        </Transition>
+        <Suspense>
+          <component :is="Component"></component>
+          <template #fallback> Loading... </template>
+        </Suspense>
       </template>
     </RouterView>
   </div>

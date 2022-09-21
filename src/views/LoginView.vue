@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { firebaseLogin } from "@/firebase";
-import { ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
+import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { useRouter } from "vue-router";
 // import { RouterLink } from "vue-router";
+
+const router = useRouter();
+
+const userStore = useUserStore();
 
 const loginInfo = ref({} as { username: string; password: string });
 
@@ -28,15 +34,27 @@ const loginFormSchema = ref([
 
 const handleLogin = async () => {
   try {
-    console.log(
-      await firebaseLogin(loginInfo.value.username, loginInfo.value.password)
+    const userCreds = await firebaseLogin(
+      loginInfo.value.username,
+      loginInfo.value.password
     );
+
+    userStore.setUser(userCreds);
+    router.push({ name: "All Questions" });
   } catch (error) {
     if (error instanceof Error) {
       console.log(error);
     }
   }
 };
+
+onBeforeMount(() => {
+  document.querySelector(".navigation")?.classList.add("hidden");
+});
+
+onBeforeUnmount(() => {
+  document.querySelector(".navigation")?.classList.remove("hidden");
+});
 </script>
 
 <template>
@@ -61,9 +79,5 @@ const handleLogin = async () => {
   height: 100vh;
   width: 100vw;
   position: absolute;
-}
-
-.navigation {
-  display: none !important;
 }
 </style>

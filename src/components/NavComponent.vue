@@ -42,4 +42,8 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.hidden {
+  display: none;
+}
 </style>
