@@ -13,13 +13,7 @@ watch(
   () => route.name,
   (path) => {
     if (path !== "Log in") {
-      if (userStore.userCreds) {
-        if (!userStore.userCreds.user) {
-          router.push({ name: "Log in" });
-        }
-      } else {
-        router.push({ name: "Log in" });
-      }
+      if (!userStore.isLoggedIn()) router.push({ name: "Log in" });
     }
   }
 );

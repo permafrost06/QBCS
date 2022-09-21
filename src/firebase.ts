@@ -11,8 +11,13 @@ import {
   updateDoc,
   setDoc,
 } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  type UserCredential,
+} from "firebase/auth";
 import type { Question } from "./models/Question.model";
+import { useUserStore } from "./stores/userStore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAztfGwIasnPyTjHFVgrLQGXqRZCxIWcJU",
@@ -27,7 +32,10 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth();
 
-export const firebaseLogin = async (username: string, password: string) => {
+export const firebaseLogin = async (
+  username: string,
+  password: string
+): Promise<UserCredential> => {
   try {
     return await signInWithEmailAndPassword(auth, username, password);
   } catch (error) {
@@ -42,6 +50,10 @@ const db = initializeFirestore(app, {
 enableIndexedDbPersistence(db);
 
 export const addQuestion = async (question: Question) => {
+  const userStore = useUserStore();
+
+  question.owner = userStore.getUid();
+
   try {
     const docRef = await addDoc(collection(db, "questions"), question);
     console.log("Document written with ID: ", docRef.id);
@@ -50,7 +62,7 @@ export const addQuestion = async (question: Question) => {
   }
 };
 
-export const getAllQuestions = async () => {
+export const getAllQuestions = async (): Promise<Question[]> => {
   const querySnapshot = await getDocs(collection(db, "questions"));
 
   const allDocs: Question[] = [];

@@ -9,9 +9,19 @@ export const useUserStore = defineStore("user", () => {
     userCreds.value = user;
   };
 
+  const isLoggedIn = (): boolean => {
+    if (userCreds.value) return true;
+    return false;
+  };
+
   const logOut = () => {
     userCreds.value = null;
   };
 
-  return { userCreds, setUser, logOut };
+  const getUid = (): string => {
+    if (!userCreds.value) throw new Error("User not logged in");
+    return userCreds.value.user.uid;
+  };
+
+  return { userCreds, setUser, logOut, getUid, isLoggedIn };
 });
