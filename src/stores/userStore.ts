@@ -1,27 +1,30 @@
 import type { UserCredential } from "@firebase/auth";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { useStorage } from "@vueuse/core";
 
-export const useUserStore = defineStore("user", () => {
-  const userCreds = ref<UserCredential | null>();
+export const useUserStore = defineStore("user", {
+  state: () => ({
+    userCreds: useStorage("userCreds", {} as UserCredential | null),
+  }),
+  actions: {
+    setUser(user: UserCredential) {
+      this.userCreds = user;
+    },
 
-  const setUser = (user: UserCredential) => {
-    userCreds.value = user;
-  };
+    isLoggedIn(): boolean {
+      if (this.userCreds) {
+        if (this.userCreds.user) return true;
+      }
+      return false;
+    },
 
-  const isLoggedIn = (): boolean => {
-    if (userCreds.value) return true;
-    return false;
-  };
+    logOut() {
+      this.userCreds = null;
+    },
 
-  const logOut = () => {
-    userCreds.value = null;
-  };
-
-  const getUid = (): string => {
-    if (!userCreds.value) throw new Error("User not logged in");
-    return userCreds.value.user.uid;
-  };
-
-  return { userCreds, setUser, logOut, getUid, isLoggedIn };
+    getUid(): string {
+      if (!this.userCreds) throw new Error("User not logged in");
+      return this.userCreds.user.uid;
+    },
+  },
 });
