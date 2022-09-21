@@ -17,10 +17,16 @@ watch(
     }
   }
 );
+
+const logout = () => {
+  userStore.logOut();
+  router.push({ name: "Log in" });
+};
 </script>
 
 <template>
   <div>
+    <button @click="logout" class="logout">Logout</button>
     <NavComponent class="navigation" />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
@@ -47,5 +53,11 @@ body,
 }
 .router-view {
   margin-bottom: 4rem;
+}
+
+.logout {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
