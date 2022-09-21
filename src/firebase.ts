@@ -13,7 +13,8 @@ import {
 } from "firebase/firestore";
 import {
   getAuth,
-  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
   type UserCredential,
 } from "firebase/auth";
 import type { Question } from "./models/Question.model";
@@ -30,14 +31,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth();
+export const firebaseLogin = async (): Promise<UserCredential> => {
+  const provider = new GoogleAuthProvider();
 
-export const firebaseLogin = async (
-  username: string,
-  password: string
-): Promise<UserCredential> => {
+  const auth = getAuth();
+
   try {
-    return await signInWithEmailAndPassword(auth, username, password);
+    return await signInWithPopup(auth, provider);
   } catch (error) {
     throw new Error((error as FirebaseError).message);
   }

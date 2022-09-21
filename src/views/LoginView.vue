@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { firebaseLogin } from "@/firebase";
 import { useUserStore } from "@/stores/userStore";
-import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { onBeforeMount, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 // import { RouterLink } from "vue-router";
 
@@ -9,35 +9,11 @@ const router = useRouter();
 
 const userStore = useUserStore();
 
-const loginInfo = ref({} as { username: string; password: string });
-
-const loginFormSchema = ref([
-  {
-    $formkit: "text",
-    name: "username",
-    label: "ইউজারনেম",
-    validation: "required",
-    validationMessages: {
-      required: "ইউজারনেম ফিল্ডটি বাধ্যতামূলক",
-    },
-  },
-  {
-    $formkit: "password",
-    name: "password",
-    label: "পাসওয়ার্ড",
-    validation: "required",
-    validationMessages: {
-      required: "পাসওয়ার্ড ফিল্ডটি বাধ্যতামূলক",
-    },
-  },
-]);
+if (userStore.isLoggedIn()) router.push({ name: "All Questions" });
 
 const handleLogin = async () => {
   try {
-    const userCreds = await firebaseLogin(
-      loginInfo.value.username,
-      loginInfo.value.password
-    );
+    const userCreds = await firebaseLogin();
 
     userStore.setUser(userCreds);
     router.push({ name: "All Questions" });
@@ -59,14 +35,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="form-holder">
-    <FormKit
-      type="form"
-      submit-label="লগ ইন"
-      v-model="loginInfo"
-      @submit="handleLogin"
-    >
-      <FormKitSchema :schema="loginFormSchema" />
-    </FormKit>
+    <button class="login-button" @click="handleLogin">লগ ইন</button>
   </div>
 </template>
 
@@ -79,5 +48,15 @@ onBeforeUnmount(() => {
   height: 100vh;
   width: 100vw;
   position: absolute;
+}
+
+.login-button {
+  background-color: hsl(213, 100%, 50%);
+  border: 1px solid hsl(213, 100%, 50%);
+  border-radius: 0.25rem;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
 }
 </style>
