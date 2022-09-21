@@ -5,7 +5,10 @@ export interface Question {
   opt1: string;
   opt2: string;
   opt3: string;
-  owner: string;
+  owner: {
+    uid: string;
+    name: string;
+  };
   category: string;
   tags: Array<string>;
 }

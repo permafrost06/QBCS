@@ -26,5 +26,12 @@ export const useUserStore = defineStore("user", {
       if (!this.userCreds) throw new Error("User not logged in");
       return this.userCreds.user.uid;
     },
+
+    getName(): string {
+      if (!this.userCreds) throw new Error("User not logged in");
+      return this.userCreds.user.displayName
+        ? this.userCreds.user.displayName
+        : "";
+    },
   },
 });

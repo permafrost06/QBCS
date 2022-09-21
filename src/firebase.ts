@@ -52,7 +52,10 @@ enableIndexedDbPersistence(db);
 export const addQuestion = async (question: Question) => {
   const userStore = useUserStore();
 
-  question.owner = userStore.getUid();
+  question.owner = {
+    uid: userStore.getUid(),
+    name: userStore.getName(),
+  };
 
   try {
     const docRef = await addDoc(collection(db, "questions"), question);
