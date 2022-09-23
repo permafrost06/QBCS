@@ -17,7 +17,7 @@ const emit = defineEmits(["update-list"]);
 
 const userStore = useUserStore();
 
-const deleteDialog = ref(true);
+const deleteDialog = ref(false);
 
 const getCategoryLabel = (category: string): string => {
   if (category) {
