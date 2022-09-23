@@ -6,7 +6,10 @@ import {
   updateQuestion,
   deleteQuestion,
 } from "@/firebase";
+import { useUserStore } from "@/stores/userStore";
 import type { Question } from "@/models/Question.model";
+
+const userStore = useUserStore();
 
 const props = defineProps<{ editMode: boolean }>();
 
@@ -34,6 +37,11 @@ const printTags = (tags: string[]): string => {
   else return "";
 };
 
+const isOwner = (uid: string) => {
+  if (userStore.getUid() === uid) return true;
+  return false;
+};
+
 const handleEditQuestion = async (question: Question) => {
   await updateQuestion(question);
 };
@@ -59,7 +67,7 @@ const handleDeleteQuestion = async (id: string) => {
         <div class="owner">{{ question.owner?.name.split(" ")[0] }}</div>
         <div class="tags">{{ printTags(question.tags) }}</div>
       </div>
-      <div v-if="props.editMode">
+      <div v-if="props.editMode && isOwner(question.owner?.uid)">
         <button @click="handleEditQuestion(question)">Edit</button>
         <button @click="handleDeleteQuestion(question.id)">Delete</button>
       </div>
