@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getAllQuestions, getCategories } from "@/firebase";
+import { getAllQuestions, getCategories, updateQuestion } from "@/firebase";
 import type { Question } from "@/models/Question.model";
+
+const props = defineProps<{ editMode: boolean }>();
 
 const allQuestions = ref([] as Question[]);
 const categories = ref();
@@ -26,6 +28,14 @@ const printTags = (tags: string[]): string => {
   if (tags) return tags.join(", ");
   else return "";
 };
+
+const handleEditQuestion = async (question: Question) => {
+  await updateQuestion(question);
+};
+
+const handleDeleteQuestion = async (id: string) => {
+  console.log(id);
+};
 </script>
 
 <template>
@@ -41,6 +51,10 @@ const printTags = (tags: string[]): string => {
           }}</span>
         </div>
         <div class="tags">{{ printTags(question.tags) }}</div>
+      </div>
+      <div v-if="props.editMode">
+        <button @click="handleEditQuestion(question)">Edit</button>
+        <button @click="handleDeleteQuestion(question.id)">Delete</button>
       </div>
     </div>
   </div>

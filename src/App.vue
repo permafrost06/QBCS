@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import NavComponent from "./components/NavComponent.vue";
 import { useUserStore } from "./stores/userStore";
@@ -8,6 +8,8 @@ const route = useRoute();
 const router = useRouter();
 
 const userStore = useUserStore();
+
+const editMode = ref(false);
 
 watch(
   () => route.name,
@@ -22,16 +24,21 @@ const logout = () => {
   userStore.logOut();
   router.push({ name: "Log in" });
 };
+
+const toggleEdit = () => {
+  editMode.value = !editMode.value;
+};
 </script>
 
 <template>
   <div>
     <button @click="logout" class="logout">Logout</button>
+    <button @click="toggleEdit" class="edit-button">Edit</button>
     <NavComponent class="navigation" />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
         <Suspense>
-          <component :is="Component"></component>
+          <component :edit-mode="editMode" :is="Component"></component>
           <template #fallback> Loading... </template>
         </Suspense>
       </template>
@@ -59,5 +66,11 @@ body,
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.edit-button {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
