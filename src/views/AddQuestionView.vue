@@ -16,23 +16,27 @@ const loadCategories = async () => {
 await loadCategories();
 
 const validateTags = ({ value }: FormKitNode) => {
-  const tags = (value as string).split(",");
+  if (value) {
+    const tags = (value as string).split(",");
 
-  if (!tags.length) {
-    return false;
+    if (tags.length) {
+      return true;
+    }
   }
 
-  return true;
+  return false;
 };
 
 const maxTags = ({ value }: FormKitNode) => {
-  const tags = (value as string).split(",");
+  if (value) {
+    const tags = (value as string).split(",");
 
-  if (tags.length > 20) {
-    return false;
+    if (tags.length < 20) {
+      return true;
+    }
   }
 
-  return true;
+  return false;
 };
 
 const quesFormSchema = ref([
