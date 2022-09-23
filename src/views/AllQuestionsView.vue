@@ -2,10 +2,10 @@
 import { ref } from "vue";
 import {
   getAllQuestions,
-  getCategories,
   updateQuestion,
   deleteQuestion,
-} from "@/firebase";
+} from "@/firebase/controllers/questions";
+import { getCategories } from "@/firebase";
 import { useUserStore } from "@/stores/userStore";
 import type { Question } from "@/models/Question.model";
 

@@ -1,16 +1,12 @@
 import { FirebaseError, initializeApp } from "firebase/app";
 import {
   initializeFirestore,
-  collection,
-  addDoc,
-  getDocs,
   doc,
   getDoc,
   enableIndexedDbPersistence,
   CACHE_SIZE_UNLIMITED,
   updateDoc,
   setDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -20,8 +16,6 @@ import {
   // browserLocalPersistence,
   type UserCredential,
 } from "firebase/auth";
-import type { Question } from "./models/Question.model";
-import { useUserStore } from "./stores/userStore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAztfGwIasnPyTjHFVgrLQGXqRZCxIWcJU",
@@ -47,59 +41,11 @@ export const firebaseLogin = async (): Promise<UserCredential> => {
   }
 };
 
-const db = initializeFirestore(app, {
+export const db = initializeFirestore(app, {
   cacheSizeBytes: CACHE_SIZE_UNLIMITED,
 });
 
 enableIndexedDbPersistence(db);
-
-export const addQuestion = async (question: Question) => {
-  const userStore = useUserStore();
-
-  question.owner = {
-    uid: userStore.getUid(),
-    name: userStore.getName(),
-  };
-
-  try {
-    const docRef = await addDoc(collection(db, "questions"), question);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-};
-
-export const updateQuestion = async (question: Question) => {
-  const { id, ...quesDoc } = question;
-
-  const docRef = doc(db, "questions", id);
-
-  try {
-    await updateDoc(docRef, { ...quesDoc });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const deleteQuestion = async (id: string) => {
-  const quesRef = doc(db, "questions", id);
-
-  await deleteDoc(quesRef);
-};
-
-export const getAllQuestions = async (): Promise<Question[]> => {
-  const querySnapshot = await getDocs(collection(db, "questions"));
-
-  const allDocs: Question[] = [];
-  querySnapshot.forEach((doc) => {
-    allDocs.push({
-      id: doc.id,
-      ...doc.data(),
-    } as Question);
-  });
-
-  return allDocs;
-};
 
 export const getConfig = async (config: string) => {
   const docRef = doc(db, "config", config);
