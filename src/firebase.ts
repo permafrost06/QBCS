@@ -75,7 +75,7 @@ export const updateQuestion = async (question: Question) => {
   const docRef = doc(db, "questions", id);
 
   try {
-    await updateDoc(docRef, quesDoc);
+    await updateDoc(docRef, { ...quesDoc });
   } catch (e) {
     console.log(e);
   }
