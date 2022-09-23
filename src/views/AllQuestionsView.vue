@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getAllQuestions, getCategories, updateQuestion } from "@/firebase";
+import {
+  getAllQuestions,
+  getCategories,
+  updateQuestion,
+  deleteQuestion,
+} from "@/firebase";
 import type { Question } from "@/models/Question.model";
 
 const props = defineProps<{ editMode: boolean }>();
@@ -16,8 +21,8 @@ const loadCategories = async () => {
   categories.value = await getCategories();
 };
 
-loadCategories();
-loadQuestions();
+await loadCategories();
+await loadQuestions();
 
 const getCategoryLabel = (category: string): string => {
   if (category) return categories.value.get(category);
@@ -34,7 +39,8 @@ const handleEditQuestion = async (question: Question) => {
 };
 
 const handleDeleteQuestion = async (id: string) => {
-  console.log(id);
+  await deleteQuestion(id);
+  await loadQuestions();
 };
 </script>
 
@@ -42,14 +48,15 @@ const handleDeleteQuestion = async (id: string) => {
   <div class="container">
     <h1>সব প্রশ্ন</h1>
     <div class="question" v-for="question in allQuestions" :key="question.id">
+      <div class="category">
+        <span class="category-text">{{
+          getCategoryLabel(question.category)
+        }}</span>
+      </div>
       <div class="text">{{ question.text }}</div>
       <div>{{ question.answer }}</div>
       <div class="meta">
-        <div class="category">
-          <span class="category-text">{{
-            getCategoryLabel(question.category)
-          }}</span>
-        </div>
+        <div class="owner">{{ question.owner?.name.split(" ")[0] }}</div>
         <div class="tags">{{ printTags(question.tags) }}</div>
       </div>
       <div v-if="props.editMode">
@@ -78,6 +85,7 @@ const handleDeleteQuestion = async (id: string) => {
   .meta {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     margin-top: 0.5rem;
   }
 
@@ -89,6 +97,10 @@ const handleDeleteQuestion = async (id: string) => {
       background-color: hsl(0, 0%, 95%);
       border-radius: 0.25rem;
     }
+  }
+
+  .owner {
+    font-size: 0.7rem;
   }
 
   .text {

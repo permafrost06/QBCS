@@ -10,11 +10,14 @@ import {
   CACHE_SIZE_UNLIMITED,
   updateDoc,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  // setPersistence,
+  // browserLocalPersistence,
   type UserCredential,
 } from "firebase/auth";
 import type { Question } from "./models/Question.model";
@@ -35,6 +38,7 @@ export const firebaseLogin = async (): Promise<UserCredential> => {
   const provider = new GoogleAuthProvider();
 
   const auth = getAuth();
+  // await setPersistence(auth, browserLocalPersistence);
 
   try {
     return await signInWithPopup(auth, provider);
@@ -63,6 +67,24 @@ export const addQuestion = async (question: Question) => {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+};
+
+export const updateQuestion = async (question: Question) => {
+  const { id, ...quesDoc } = question;
+
+  const docRef = doc(db, "questions", id);
+
+  try {
+    await updateDoc(docRef, quesDoc);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteQuestion = async (id: string) => {
+  const quesRef = doc(db, "questions", id);
+
+  await deleteDoc(quesRef);
 };
 
 export const getAllQuestions = async (): Promise<Question[]> => {
