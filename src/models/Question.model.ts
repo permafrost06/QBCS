@@ -10,5 +10,5 @@ export interface Question {
     name: string;
   };
   category: string;
-  tags: Array<string>;
+  tags: Array<string> | string;
 }

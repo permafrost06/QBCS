@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import type { Question } from "@/models/Question.model";
-import { useRouter } from "vue-router";
-import { addQuestion } from "@/firebase/controllers/questions";
+import { useRoute, useRouter } from "vue-router";
+import { addQuestion, getQuestion } from "@/firebase/controllers/questions";
 import QuestionForm from "../components/QuestionFormComponent.vue";
+import { ref } from "vue";
 import { isText } from "@/composables";
 
 const router = useRouter();
+const route = useRoute();
+
+const id = route.params.id;
+
+const question = ref<Question>();
+
+async () => {
+  if (isText(id)) question.value = await getQuestion(id);
+};
 
 const handleAddQuestion = async (newQuestion: Question) => {
-  if (isText(newQuestion.tags))
-    newQuestion.tags = newQuestion.tags.split(",").map((tag) => tag.trim());
+  newQuestion.tags = (newQuestion.tags as unknown as string)
+    .split(",")
+    .map((tag) => tag.trim());
 
   addQuestion(newQuestion);
   router.push({ name: "All Questions" });
@@ -17,7 +28,7 @@ const handleAddQuestion = async (newQuestion: Question) => {
 </script>
 
 <template>
-  <QuestionForm @submit="handleAddQuestion" />
+  <QuestionForm update :oldQues="question" @submit="handleAddQuestion" />
 </template>
 
 <style scoped>

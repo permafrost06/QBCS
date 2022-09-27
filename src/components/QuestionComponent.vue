@@ -6,10 +6,10 @@ import {
   deleteQuestion,
 } from "@/firebase/controllers/questions";
 import { ref } from "vue";
+import { isText } from "@/composables";
 
 const props = defineProps<{
   question: Question;
-  categories: Map<string, string>;
   editMode: boolean;
 }>();
 
@@ -19,17 +19,9 @@ const userStore = useUserStore();
 
 const deleteDialog = ref(false);
 
-const getCategoryLabel = (category: string): string => {
-  if (category) {
-    const label = props.categories.get(category);
-    if (label) return label;
-  }
-  return "Uncategorized";
-};
-
-const printTags = (tags: string[]): string => {
-  if (tags) return tags.join(", ");
-  else return "";
+const printTags = (tags: string[] | string): string => {
+  if (!isText(tags)) if (tags) return tags.join(", ");
+  return "";
 };
 
 const isOwner = (uid: string) => {
@@ -65,9 +57,7 @@ const cancelDelete = () => {
       </div>
     </div>
     <div class="category">
-      <span class="category-text">{{
-        getCategoryLabel(props.question.category)
-      }}</span>
+      <span class="category-text">{{ props.question.category }}</span>
     </div>
     <div class="text">{{ props.question.text }}</div>
     <div>{{ props.question.answer }}</div>
