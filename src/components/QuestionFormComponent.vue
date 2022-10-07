@@ -1,20 +1,21 @@
 <script setup lang="ts">
+import { getQuestion } from "@/firebase/controllers/questions";
 import type { Question } from "@/models/Question.model";
 import type { FormKitNode } from "@formkit/core";
+import { isText } from "@/composables";
 import { onBeforeMount, ref } from "vue";
 
 interface Props {
   update: boolean;
-  oldQues: Question;
+  quesId: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   update: false,
-  oldQues: () => {
-    return {} as Question;
-  },
+  quesId: "",
 });
 
 interface Emits {
+  // eslint-disable-next-line no-unused-vars
   (eventName: "submit", question: Question): void;
 }
 const emit = defineEmits<Emits>();
@@ -49,9 +50,16 @@ const handleSubmit = () => {
   emit("submit", newQuestion.value);
 };
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (props.update) {
-    newQuestion.value = props.oldQues;
+    const question = await getQuestion(props.quesId);
+    const tags = question.tags;
+
+    if (!isText(tags)) {
+      question.tags = tags.join(", ");
+    }
+
+    newQuestion.value = question;
   }
 });
 </script>
