@@ -7,6 +7,7 @@ import {
 } from "@/firebase/controllers/questions";
 import { ref } from "vue";
 import { isText } from "@/composables";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   question: Question;
@@ -15,12 +16,16 @@ const props = defineProps<{
 
 const emit = defineEmits(["update-list"]);
 
+const router = useRouter();
+
 const userStore = useUserStore();
 
 const deleteDialog = ref(false);
 
 const printTags = (tags: string[] | string): string => {
-  if (!isText(tags)) if (tags) return tags.join(", ");
+  if (!isText(tags)) {
+    if (tags) return tags.join(", ");
+  }
   return "";
 };
 
@@ -30,7 +35,7 @@ const isOwner = (uid: string) => {
 };
 
 const handleEditQuestion = async (question: Question) => {
-  await updateQuestion(question);
+  router.push({ name: "Edit Question", params: { id: props.question.id } });
 };
 
 const handleDelete = async () => {

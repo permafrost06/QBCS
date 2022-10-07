@@ -13,11 +13,11 @@ const id = route.params.id;
 
 const question = ref<Question>();
 
-async () => {
+(async () => {
   if (isText(id)) question.value = await getQuestion(id);
-};
+})();
 
-const handleAddQuestion = async (newQuestion: Question) => {
+const handleEditQuestion = async (newQuestion: Question) => {
   newQuestion.tags = (newQuestion.tags as unknown as string)
     .split(",")
     .map((tag) => tag.trim());
@@ -28,7 +28,7 @@ const handleAddQuestion = async (newQuestion: Question) => {
 </script>
 
 <template>
-  <QuestionForm update :oldQues="question" @submit="handleAddQuestion" />
+  <QuestionForm update :oldQues="question" @submit="handleEditQuestion" />
 </template>
 
 <style scoped>

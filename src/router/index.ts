@@ -24,6 +24,12 @@ const router = createRouter({
       name: "Log in",
       component: () => import("@/views/LoginView.vue"),
     },
+    {
+      path: "/edit/:id",
+      name: "Edit Question",
+      component: () => import("@/views/EditQuestionView.vue"),
+      props: true,
+    },
   ],
 });
 
