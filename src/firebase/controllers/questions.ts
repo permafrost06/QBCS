@@ -3,9 +3,9 @@ import {
   addDoc,
   getDocs,
   doc,
-  updateDoc,
   deleteDoc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { useUserStore } from "@/stores/userStore";
 import { db } from "@/firebase";
@@ -58,7 +58,7 @@ export const updateQuestion = async (question: Question) => {
   const docRef = doc(db, "questions", id);
 
   try {
-    await updateDoc(docRef, { ...quesDoc });
+    await setDoc(docRef, quesDoc);
   } catch (e) {
     console.log(e);
   }

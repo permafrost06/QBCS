@@ -47,6 +47,10 @@ const maxTags = ({ value }: FormKitNode) => {
 const newQuestion = ref({} as Question);
 
 const handleSubmit = () => {
+  if (props.update) {
+    newQuestion.value.id = props.quesId;
+  }
+
   emit("submit", newQuestion.value);
 };
 
