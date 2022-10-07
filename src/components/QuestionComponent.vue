@@ -6,7 +6,7 @@ import {
   deleteQuestion,
 } from "@/firebase/controllers/questions";
 import { ref } from "vue";
-import { isText } from "@/composables";
+import { isString } from "@/composables";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -23,7 +23,7 @@ const userStore = useUserStore();
 const deleteDialog = ref(false);
 
 const printTags = (tags: string[] | string): string => {
-  if (!isText(tags)) {
+  if (!isString(tags)) {
     if (tags) return tags.join(", ");
   }
   return "";

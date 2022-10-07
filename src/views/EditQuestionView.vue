@@ -10,7 +10,7 @@ const route = useRoute();
 const id = route.params.id as string;
 
 // (async () => {
-//   if (isText(id)) question.value = await getQuestion(id);
+//   if (isString(id)) question.value = await getQuestion(id);
 // })();
 
 const handleEditQuestion = async (newQuestion: Question) => {

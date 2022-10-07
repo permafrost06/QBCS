@@ -3,12 +3,12 @@ import type { Question } from "@/models/Question.model";
 import { useRouter } from "vue-router";
 import { addQuestion } from "@/firebase/controllers/questions";
 import QuestionForm from "../components/QuestionFormComponent.vue";
-import { isText } from "@/composables";
+import { isString } from "@/composables";
 
 const router = useRouter();
 
 const handleAddQuestion = async (newQuestion: Question) => {
-  if (isText(newQuestion.tags))
+  if (isString(newQuestion.tags))
     newQuestion.tags = newQuestion.tags.split(",").map((tag) => tag.trim());
 
   addQuestion(newQuestion);

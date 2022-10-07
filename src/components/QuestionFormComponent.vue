@@ -2,7 +2,7 @@
 import { getQuestion } from "@/firebase/controllers/questions";
 import type { Question } from "@/models/Question.model";
 import type { FormKitNode } from "@formkit/core";
-import { isText } from "@/composables";
+import { isString } from "@/composables";
 import { onBeforeMount, ref } from "vue";
 
 interface Props {
@@ -55,7 +55,7 @@ onBeforeMount(async () => {
     const question = await getQuestion(props.quesId);
     const tags = question.tags;
 
-    if (!isText(tags)) {
+    if (!isString(tags)) {
       question.tags = tags.join(", ");
     }
 
