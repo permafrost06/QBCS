@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getAllQuestions } from "@/firebase/controllers/questions";
 import type { Question } from "@/models/Question.model";
 import QuestionComponent from "../components/QuestionComponent.vue";
+import { useQuestionsStore } from "@/stores/questionsStore";
+
+const questionsStore = useQuestionsStore();
 
 const props = defineProps<{ editMode: boolean }>();
 
 const allQuestions = ref([] as Question[]);
 
 const loadQuestions = async () => {
-  allQuestions.value = await getAllQuestions();
+  await questionsStore.loadQuestions();
+  allQuestions.value = questionsStore.getQuestions();
 };
 
 await loadQuestions();
