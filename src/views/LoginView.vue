@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { firebaseLogin } from "@/firebase";
-import { useUserStore } from "@/stores/userStore";
 import { onBeforeMount, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-// import { RouterLink } from "vue-router";
+import * as firebaseUser from "@/firebase/controllers/user";
 
 const router = useRouter();
 
-const userStore = useUserStore();
-
-if (userStore.isLoggedIn()) router.push({ name: "All Questions" });
+if (firebaseUser.isLoggedIn()) router.push({ name: "All Questions" });
 
 const handleLogin = async () => {
   try {
-    const userCreds = await firebaseLogin();
+    await firebaseUser.logIn();
 
-    userStore.setUser(userCreds);
     router.push({ name: "All Questions" });
   } catch (error) {
     if (error instanceof Error) {

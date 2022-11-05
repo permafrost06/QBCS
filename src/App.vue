@@ -2,12 +2,11 @@
 import { watch, ref } from "vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
 import NavComponent from "./components/NavComponent.vue";
-import { useUserStore } from "./stores/userStore";
+import "@/firebase";
+import * as firebaseUser from "@/firebase/controllers/user";
 
 const route = useRoute();
 const router = useRouter();
-
-const userStore = useUserStore();
 
 const editMode = ref(false);
 
@@ -15,13 +14,13 @@ watch(
   () => route.name,
   (path) => {
     if (path !== "Log in") {
-      if (!userStore.isLoggedIn()) router.push({ name: "Log in" });
+      if (!firebaseUser.isLoggedIn()) router.push({ name: "Log in" });
     }
   }
 );
 
 const logout = () => {
-  userStore.logOut();
+  firebaseUser.logOut();
   router.push({ name: "Log in" });
 };
 

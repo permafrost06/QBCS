@@ -7,16 +7,14 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-import { useUserStore } from "@/stores/userStore";
+import * as firebaseUser from "@/firebase/controllers/user";
 import { db } from "@/firebase";
 import type { Question } from "@/models/Question.model";
 
 export const addQuestion = async (question: Question) => {
-  const userStore = useUserStore();
-
   question.owner = {
-    uid: userStore.getUid(),
-    name: userStore.getName(),
+    uid: firebaseUser.getUid(),
+    name: firebaseUser.getName(),
   };
 
   try {

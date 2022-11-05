@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/userStore";
 import type { Question } from "@/models/Question.model";
-import {
-  updateQuestion,
-  deleteQuestion,
-} from "@/firebase/controllers/questions";
+import { deleteQuestion } from "@/firebase/controllers/questions";
 import { ref } from "vue";
 import { isString } from "@/composables";
 import { useRouter } from "vue-router";
+import { getUid } from "@/firebase/controllers/user";
 
 const props = defineProps<{
   question: Question;
@@ -18,23 +15,32 @@ const emit = defineEmits(["update-list"]);
 
 const router = useRouter();
 
-const userStore = useUserStore();
-
 const deleteDialog = ref(false);
 
 const printTags = (tags: string[] | string): string => {
   if (!isString(tags)) {
-    if (tags) return tags.join(", ");
+    if (tags) {
+      const tagString = tags.join(", ");
+
+      const length = tagString.length;
+
+      // this requires a better fix
+      if (tagString[length - 1] === " ") {
+        return tagString.substring(0, length - 2);
+      } else {
+        return tagString;
+      }
+    }
   }
   return "";
 };
 
 const isOwner = (uid: string) => {
-  if (userStore.getUid() === uid) return true;
+  if (getUid() === uid) return true;
   return false;
 };
 
-const handleEditQuestion = async (question: Question) => {
+const handleEditQuestion = async () => {
   router.push({ name: "Edit Question", params: { id: props.question.id } });
 };
 
@@ -71,7 +77,7 @@ const cancelDelete = () => {
       <div class="tags">{{ printTags(props.question.tags) }}</div>
     </div>
     <div v-if="props.editMode && isOwner(props.question.owner?.uid)">
-      <button @click="handleEditQuestion(props.question)">Edit</button>
+      <button @click="handleEditQuestion">Edit</button>
       <button @click="promptDelete">Delete</button>
     </div>
   </div>

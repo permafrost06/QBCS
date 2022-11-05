@@ -1,4 +1,4 @@
-import { FirebaseError, initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
   initializeFirestore,
   doc,
@@ -8,14 +8,6 @@ import {
   updateDoc,
   setDoc,
 } from "firebase/firestore";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  // setPersistence,
-  // browserLocalPersistence,
-  type UserCredential,
-} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAztfGwIasnPyTjHFVgrLQGXqRZCxIWcJU",
@@ -27,19 +19,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-export const firebaseLogin = async (): Promise<UserCredential> => {
-  const provider = new GoogleAuthProvider();
-
-  const auth = getAuth();
-  // await setPersistence(auth, browserLocalPersistence);
-
-  try {
-    return await signInWithPopup(auth, provider);
-  } catch (error) {
-    throw new Error((error as FirebaseError).message);
-  }
-};
 
 export const db = initializeFirestore(app, {
   cacheSizeBytes: CACHE_SIZE_UNLIMITED,
