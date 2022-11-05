@@ -35,5 +35,9 @@ export const useQuestionsStore = defineStore("questions", {
         }
       );
     },
+
+    getAnswer(id: string) {
+      return this.questions.filter((question) => question.id === id)[0].answer;
+    },
   },
 });

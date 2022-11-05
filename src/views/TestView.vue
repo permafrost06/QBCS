@@ -4,9 +4,35 @@ import { ref } from "vue";
 
 const questionsStore = useQuestionsStore();
 
+const answers = ref({} as { [key: string]: string });
+const result = ref("");
+
 const num_questions = ref(10);
 
 const testQuestions = ref(questionsStore.getTestQuestions(num_questions.value));
+
+testQuestions.value.forEach((question) => {
+  answers.value[question.id] = "";
+});
+
+const handleTestSubmit = () => {
+  let correct: number = 0;
+  let incorrect: number = 0;
+
+  for (const id in answers.value) {
+    if (questionsStore.getAnswer(id) === answers.value[id]) {
+      correct += 1;
+    } else {
+      incorrect += 1;
+    }
+  }
+
+  result.value = `Correct: ${correct}, Incorrect: ${incorrect}`;
+};
+
+const logChange = (id: string, answer: string) => {
+  answers.value[id] = answer;
+};
 </script>
 
 <template>
@@ -19,11 +45,19 @@ const testQuestions = ref(questionsStore.getTestQuestions(num_questions.value));
       {{ question.text }}
       <fieldset>
         <div v-for="(opt, idx) in question.options" :key="idx">
-          <input type="radio" :id="question.id + 'opt' + idx" :value="opt" />
+          <input
+            type="radio"
+            :name="question.text"
+            :id="question.id + 'opt' + idx"
+            :value="opt"
+            @change="logChange(question.id, opt)"
+          />
           <label :for="question.id + 'opt' + idx">{{ opt }}</label>
         </div>
       </fieldset>
     </div>
+    <button @click="handleTestSubmit">Submit</button>
+    <p>{{ result }}</p>
   </div>
 </template>
 
