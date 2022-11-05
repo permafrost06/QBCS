@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type { Question } from "@/models/Question.model";
 import { getAllQuestions } from "@/firebase/controllers/questions";
-import { selectRandomElements } from "@/composables";
+import { selectRandomElements, shuffleArray } from "@/composables";
 import type { TestQuestion } from "@/models/TestQuestion.model";
 
 export const useQuestionsStore = defineStore("questions", {
@@ -25,12 +25,12 @@ export const useQuestionsStore = defineStore("questions", {
           return {
             id: question.id,
             text: question.text,
-            options: [
+            options: shuffleArray([
               question.answer,
               question.opt1,
               question.opt2,
               question.opt3,
-            ],
+            ]),
           } as TestQuestion;
         }
       );
