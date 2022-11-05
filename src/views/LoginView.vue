@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-import * as firebaseUser from "@/firebase/controllers/user";
+import { isLoggedIn, logIn } from "@/firebase/controllers/user";
 
 const router = useRouter();
 
-if (firebaseUser.isLoggedIn()) router.push({ name: "All Questions" });
+const loginCheck = setInterval(() => {
+  if (isLoggedIn()) {
+    router.push({ name: "All Questions" });
+  }
+}, 1000);
 
 const handleLogin = async () => {
   try {
-    await firebaseUser.logIn();
+    await logIn();
 
     router.push({ name: "All Questions" });
   } catch (error) {
@@ -25,6 +29,7 @@ onBeforeMount(() => {
 
 onBeforeUnmount(() => {
   document.querySelector(".navigation")?.classList.remove("hidden");
+  clearInterval(loginCheck);
 });
 </script>
 
