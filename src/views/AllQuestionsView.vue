@@ -20,7 +20,7 @@ await loadQuestions();
 
 <template>
   <div class="container">
-    <h1>সব প্রশ্ন</h1>
+    <h1>সকল প্রশ্ন</h1>
     <QuestionComponent
       v-for="question in allQuestions"
       :key="question.id"
