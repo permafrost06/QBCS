@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import { watch, ref } from "vue";
-import { RouterView, useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
+import { RouterView, useRouter } from "vue-router";
 import NavComponent from "./components/NavComponent.vue";
 import "@/firebase";
 import * as firebaseUser from "@/firebase/controllers/user";
 
-const route = useRoute();
 const router = useRouter();
 
 const editMode = ref(false);
-
-watch(
-  () => route.name,
-  (path) => {
-    if (path !== "Log in") {
-      if (!firebaseUser.isLoggedIn()) router.push({ name: "Log in" });
-    }
-  }
-);
 
 const logout = () => {
   firebaseUser.logOut();

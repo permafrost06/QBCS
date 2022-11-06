@@ -11,7 +11,12 @@ const handleAddQuestion = async (newQuestion: Question) => {
   if (isString(newQuestion.tags))
     newQuestion.tags = newQuestion.tags.split(",").map((tag) => tag.trim());
 
-  addQuestion(newQuestion);
+  try {
+    await addQuestion(newQuestion);
+  } catch (error) {
+    router.push({ name: "Log in" });
+  }
+
   router.push({ name: "All Questions" });
 };
 </script>
