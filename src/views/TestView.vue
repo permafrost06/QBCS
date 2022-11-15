@@ -9,29 +9,86 @@ const result = ref("");
 
 const num_questions = ref(10);
 
+const submitted = ref(false);
+
+const divs = ref({} as { [key: string]: any });
+
 const testQuestions = ref(questionsStore.getTestQuestions(num_questions.value));
 
 testQuestions.value.forEach((question) => {
   answers.value[question.id] = "";
 });
 
+const logChange = (id: string, answer: string) => {
+  answers.value[id] = answer;
+};
+
 const handleTestSubmit = () => {
-  let correct: number = 0;
-  let incorrect: number = 0;
+  submitted.value = true;
+
+  let correct = 0;
+  let incorrect = 0;
+  let empty = 0;
+  let score = 0;
 
   for (const id in answers.value) {
-    if (questionsStore.getAnswer(id) === answers.value[id]) {
-      correct += 1;
+    const answer = questionsStore.getAnswer(id);
+    const quesObj = testQuestions.value.find((question) => question.id === id);
+
+    if (quesObj) quesObj.ans = answer;
+
+    if (answers.value[id]) {
+      if (answer === answers.value[id]) {
+        correct += 1;
+        score += 1;
+
+        (divs.value[id] as HTMLDivElement).classList.add("correct-ans");
+      } else {
+        incorrect += 1;
+        score -= 0.5;
+
+        (divs.value[id] as HTMLDivElement).classList.add("incorrect-ans");
+      }
     } else {
-      incorrect += 1;
+      empty += 1;
+
+      (divs.value[id] as HTMLDivElement).classList.add("incorrect-ans");
     }
   }
 
-  result.value = `Correct: ${correct}, Incorrect: ${incorrect}`;
+  result.value = `Score: ${score}, Correct: ${correct}, Incorrect: ${incorrect}, Left empty: ${empty}`;
 };
 
-const logChange = (id: string, answer: string) => {
-  answers.value[id] = answer;
+const resetQuestionStyles = () => {
+  for (const id in divs.value) {
+    (divs.value[id] as HTMLDivElement).classList.remove("correct-ans");
+    (divs.value[id] as HTMLDivElement).classList.remove("incorrect-ans");
+  }
+};
+
+const restart = () => {
+  resetQuestionStyles();
+  testQuestions.value = questionsStore.getTestQuestions(num_questions.value);
+  result.value = "";
+
+  answers.value = {};
+
+  testQuestions.value.forEach((question) => {
+    answers.value[question.id] = "";
+  });
+
+  submitted.value = false;
+};
+
+const restartWithSame = () => {
+  resetQuestionStyles();
+  result.value = "";
+
+  testQuestions.value.forEach((question) => {
+    answers.value[question.id] = "";
+  });
+
+  submitted.value = false;
 };
 </script>
 
@@ -41,6 +98,11 @@ const logChange = (id: string, answer: string) => {
       class="test-question"
       v-for="question in testQuestions"
       :key="question.id"
+      :ref="
+        (el) => {
+          divs[question.id] = el;
+        }
+      "
     >
       {{ question.text }}
       <fieldset>
@@ -51,13 +113,28 @@ const logChange = (id: string, answer: string) => {
             :id="question.id + 'opt' + idx"
             :value="opt"
             @change="logChange(question.id, opt)"
+            :disabled="submitted"
           />
-          <label :for="question.id + 'opt' + idx">{{ opt }}</label>
+          <label
+            :for="question.id + 'opt' + idx"
+            :class="{
+              correct: submitted && question.ans === opt,
+              incorrect:
+                submitted &&
+                question.ans !== opt &&
+                answers[question.id] === opt,
+            }"
+            >{{ opt }}</label
+          >
         </div>
       </fieldset>
     </div>
-    <button @click="handleTestSubmit">Submit</button>
+    <button @click="handleTestSubmit" :disabled="submitted">Submit</button>
     <p>{{ result }}</p>
+    <button v-if="submitted" @click="restart">Restart</button>
+    <button v-if="submitted" @click="restartWithSame">
+      Restart with same questions
+    </button>
   </div>
 </template>
 
@@ -86,5 +163,21 @@ fieldset {
 
 label {
   margin-left: 0.35rem;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
+
+.correct-ans {
+  background-color: hsl(120, 48%, 75%);
+}
+
+.incorrect-ans {
+  background-color: hsl(0, 75%, 75%);
 }
 </style>
