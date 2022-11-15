@@ -56,7 +56,7 @@ const handleTestSubmit = () => {
     }
   }
 
-  result.value = `Score: ${score}, Correct: ${correct}, Incorrect: ${incorrect}, Left empty: ${empty}`;
+  result.value = `মার্কস: ${score}, সঠিক: ${correct}, বেঠিক: ${incorrect}, উত্তরহীন: ${empty}`;
 };
 
 const resetQuestionStyles = () => {
@@ -129,11 +129,11 @@ const restartWithSame = () => {
         </div>
       </fieldset>
     </div>
-    <button @click="handleTestSubmit" :disabled="submitted">Submit</button>
+    <button @click="handleTestSubmit" :disabled="submitted">জমা দিন</button>
     <p>{{ result }}</p>
-    <button v-if="submitted" @click="restart">Restart</button>
+    <button v-if="submitted" @click="restart">নতুন টেস্ট দিন</button>
     <button v-if="submitted" @click="restartWithSame">
-      Restart with same questions
+      এই টেস্টটি পুনরায় দিন
     </button>
   </div>
 </template>
