@@ -3,6 +3,10 @@ import { ref } from "vue";
 import type { Question } from "@/models/Question.model";
 import QuestionComponent from "../components/QuestionComponent.vue";
 import { useQuestionsStore } from "@/stores/questionsStore";
+import { FirebaseError } from "@firebase/util";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const questionsStore = useQuestionsStore();
 
@@ -11,7 +15,15 @@ const props = defineProps<{ editMode: boolean }>();
 const allQuestions = ref([] as Question[]);
 
 const loadQuestions = async () => {
-  await questionsStore.loadQuestions();
+  try {
+    await questionsStore.loadQuestions();
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      if (e.message === "Missing or insufficient permissions.") {
+        router.push({ name: "Log in" });
+      }
+    }
+  }
   allQuestions.value = questionsStore.getQuestions();
 };
 
