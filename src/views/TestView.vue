@@ -56,7 +56,7 @@ const handleTestSubmit = () => {
     }
   }
 
-  result.value = `মার্কস: ${score}, সঠিক: ${correct}, বেঠিক: ${incorrect}, উত্তরহীন: ${empty}`;
+  result.value = `মার্কস: ${score} (সর্বোচ্চ নাম্বার ${num_questions.value}), সঠিক: ${correct}, বেঠিক: ${incorrect}, উত্তরহীন: ${empty}`;
 };
 
 const resetQuestionStyles = () => {
@@ -94,6 +94,7 @@ const restartWithSame = () => {
 
 <template>
   <div class="container">
+    <h1>টেস্ট</h1>
     <div
       class="test-question"
       v-for="question in testQuestions"
