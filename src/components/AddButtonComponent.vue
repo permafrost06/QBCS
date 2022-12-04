@@ -14,8 +14,8 @@
   cursor: pointer;
   width: 3.125rem;
   height: 3.125rem;
-  border: 0.125rem solid hsl(211, 48%, 81%);
-  background-color: hsl(211, 48%, 81%);
+  border: 0.125rem solid hsl(211, 60%, 60%);
+  background-color: hsl(211, 60%, 60%);
   padding: 0;
   text-decoration: none;
   text-align: center;
