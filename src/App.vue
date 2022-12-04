@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { RouterView, useRouter } from "vue-router";
 import "@/firebase";
 import * as firebaseUser from "@/firebase/controllers/user";
+import AddButton from "./components/AddButtonComponent.vue";
 
 const router = useRouter();
 
@@ -22,9 +23,7 @@ const toggleEdit = () => {
   <div>
     <button @click="logout" class="logout">Logout</button>
     <button @click="toggleEdit" class="edit-button">Edit</button>
-    <RouterLink class="add-button" :to="{ name: 'Add Question' }">
-      +
-    </RouterLink>
+    <AddButton />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
         <Suspense>
@@ -36,7 +35,7 @@ const toggleEdit = () => {
   </div>
 </template>
 
-<style lang="scss">
+<style>
 body,
 * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
@@ -66,35 +65,5 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.add-button {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 999;
-
-  text-align: center;
-  display: inline-block;
-  cursor: pointer;
-  width: 3.125rem;
-  height: 3.125rem;
-  border: 0.125rem solid hsl(211, 48%, 81%);
-  background-color: hsl(211, 48%, 81%);
-  padding: 0;
-  text-decoration: none;
-  text-align: center;
-  color: white;
-  font-size: 2.25rem;
-  font-weight: 500;
-  line-height: 2.75rem;
-  border-radius: 1.6875rem;
-  margin: 0;
-
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  &:hover {
-    box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.3);
-  }
 }
 </style>
