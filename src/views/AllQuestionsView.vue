@@ -52,9 +52,13 @@ h1 {
 
 .questions-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: 1.5rem;
 
   margin: 1rem 7rem;
+
+  @media (width <= 515px) {
+    margin: 1rem;
+  }
 }
 </style>
