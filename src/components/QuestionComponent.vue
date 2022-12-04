@@ -85,10 +85,22 @@ const cancelDelete = () => {
 
 <style lang="scss">
 .question {
-  border: 1px solid hsl(0, 0%, 70%);
+  --color: hsl(300, 100%, 100%);
+
+  border: 1px solid var(--color);
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
+
+  background-color: var(--color);
+
   position: relative;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
 
   .meta {
     display: flex;

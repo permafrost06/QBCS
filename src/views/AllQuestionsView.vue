@@ -53,7 +53,7 @@ h1 {
 .questions-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 0.5rem;
+  gap: 1.5rem;
 
   margin: 1rem;
 }

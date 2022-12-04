@@ -42,6 +42,10 @@ body,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+body {
+  background-color: hsl(211, 48%, 95%);
+}
+
 *,
 *::before,
 *::after {
