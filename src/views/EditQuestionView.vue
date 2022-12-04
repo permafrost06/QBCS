@@ -27,12 +27,4 @@ const handleEditQuestion = async (newQuestion: Question) => {
   <QuestionForm update :quesId="id" @submit="handleEditQuestion" />
 </template>
 
-<style scoped>
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 0.3rem;
-}
-</style>
+<style scoped></style>

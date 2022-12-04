@@ -25,12 +25,4 @@ const handleAddQuestion = async (newQuestion: Question) => {
   <QuestionForm @submit="handleAddQuestion" />
 </template>
 
-<style scoped>
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 0.3rem;
-}
-</style>
+<style scoped></style>
