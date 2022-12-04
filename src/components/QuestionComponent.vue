@@ -5,6 +5,7 @@ import { ref } from "vue";
 import { isString } from "@/composables";
 import { useRouter } from "vue-router";
 import { getUid } from "@/firebase/controllers/user";
+import EditButton from "./EditButtonComponent.vue";
 
 const props = defineProps<{
   question: Question;
@@ -60,15 +61,19 @@ const cancelDelete = () => {
 
 <template>
   <div class="question" :key="question.id">
-    <div class="delete-overlay" v-if="deleteDialog">
-      Delete?
-      <div>
-        <button @click="handleDelete">Yes</button
-        ><button @click="cancelDelete">No</button>
-      </div>
-    </div>
-    <div class="category">
+    <div
+      class="category"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      "
+    >
       <span class="category-text">{{ props.question.category }}</span>
+      <EditButton
+        :visible="isOwner(props.question.owner?.uid)"
+        :id="props.question.id"
+      />
     </div>
     <div class="text">{{ props.question.text }}</div>
     <div>{{ props.question.answer }}</div>

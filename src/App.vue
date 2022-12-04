@@ -9,20 +9,14 @@ const router = useRouter();
 
 const editMode = ref(false);
 
-const logout = () => {
-  firebaseUser.logOut();
-  router.push({ name: "Log in" });
-};
-
-const toggleEdit = () => {
-  editMode.value = !editMode.value;
-};
+// const logout = () => {
+//   firebaseUser.logOut();
+//   router.push({ name: "Log in" });
+// };
 </script>
 
 <template>
   <div>
-    <button @click="logout" class="logout">Logout</button>
-    <button @click="toggleEdit" class="edit-button">Edit</button>
     <AddButton />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
@@ -53,17 +47,5 @@ body {
 }
 .router-view {
   margin-bottom: 5rem;
-}
-
-.logout {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.edit-button {
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 </style>
