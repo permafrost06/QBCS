@@ -36,7 +36,7 @@ const toggleEdit = () => {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 body,
 * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
@@ -90,5 +90,11 @@ body {
   line-height: 2.75rem;
   border-radius: 1.6875rem;
   margin: 0;
+
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:hover {
+    box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.3);
+  }
 }
 </style>
