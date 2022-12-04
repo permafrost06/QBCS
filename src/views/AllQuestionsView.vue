@@ -55,6 +55,6 @@ h1 {
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 1.5rem;
 
-  margin: 1rem;
+  margin: 1rem 7rem;
 }
 </style>
