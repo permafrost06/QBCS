@@ -33,22 +33,28 @@ await loadQuestions();
 <template>
   <div class="container">
     <h1>সকল প্রশ্ন</h1>
-    <QuestionComponent
-      v-for="question in allQuestions"
-      :key="question.id"
-      :question="question"
-      :edit-mode="props.editMode"
-      @update-list="loadQuestions"
-    />
+    <div class="questions-container">
+      <QuestionComponent
+        v-for="question in allQuestions"
+        :key="question.id"
+        :question="question"
+        :edit-mode="props.editMode"
+        @update-list="loadQuestions"
+      />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+h1 {
+  text-align: center;
+}
 
+.questions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 0.5rem;
+
+  margin: 1rem;
 }
 </style>

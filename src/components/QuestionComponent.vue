@@ -86,7 +86,6 @@ const cancelDelete = () => {
 <style lang="scss">
 .question {
   border: 1px solid hsl(0, 0%, 70%);
-  width: 20rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.25rem;
   position: relative;
