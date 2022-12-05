@@ -34,10 +34,7 @@ const updateTags = (tags: Array<string>) => {
 const newQuestion = ref({} as Question);
 
 const handleSubmit = () => {
-  console.log("submitting");
-
   if (!newQuestion.value.tags) {
-    console.log("not tags");
     newQuestion.value.tags = [];
   }
 
