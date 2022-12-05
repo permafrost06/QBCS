@@ -65,7 +65,7 @@ const handleSubmit = async (ques: Question) => {
   }
 
   loadQuestions();
-  //   showModal.value = false;
+  showModal.value = false;
 };
 </script>
 
