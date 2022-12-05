@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 interface Props {
   oldTags: Array<string>;
@@ -20,7 +20,7 @@ const currentTag = ref("");
 const tags = ref<Array<string>>([]);
 
 const handleKey = (e: KeyboardEvent) => {
-  if (e.key === "," || e.key === "Enter") {
+  if (e.key === ",") {
     e.preventDefault();
     if (currentTag.value !== "") {
       tags.value.push(currentTag.value);
@@ -36,25 +36,22 @@ const handleKey = (e: KeyboardEvent) => {
   }
 };
 
-const removeTag = (tag: number) => {
-  tags.value.splice(tag, 1);
-  emit("updated", tags.value);
+const removeTag = (e: MouseEvent, tag: number) => {
+  // retrofixing weird behaviour - enter on form removed item
+  if (e.clientX !== 0 && e.clientY !== 0) {
+    e.preventDefault();
+    tags.value.splice(tag, 1);
+    emit("updated", tags.value);
+  }
 };
 
-// hack to get question modification working
-let x: number;
-x = setInterval(() => {
-  if (props.oldTags.length) {
-    tags.value = props.oldTags;
-    clearInterval(x);
-  }
-});
+onMounted(() => (tags.value = [...props.oldTags]));
 </script>
 
 <template>
   <FormKit
     inner-class="tags-container"
-    :input-class="{ 'no-text-cursor': !currentTag.length }"
+    input-class="tags-input"
     type="text"
     label="প্রশ্নের ট্যাগ"
     @keydown="handleKey"
@@ -62,7 +59,7 @@ x = setInterval(() => {
     list="tags-list"
     autocomplete="off"
     ignore="true"
-    help="ট্যাগ লিখে কমা(,) অথবা এন্টার (Enter) প্রেস করুন"
+    help="ট্যাগ লিখে কমা(,) প্রেস করুন"
   >
     <template #prefix>
       <div
@@ -72,9 +69,12 @@ x = setInterval(() => {
         :key="idx"
       >
         <span>{{ tag }}</span>
-        <button @click="removeTag(idx)">x</button>
+        <button @click="removeTag($event, idx)">x</button>
       </div>
     </template>
+    <!-- <template #suffix>
+      <FormKit type="button" label="এ্যাড" />
+    </template> -->
   </FormKit>
   <datalist id="tags-list">
     <option v-for="tag in props.tagList" :key="tag" :value="tag" />
@@ -85,6 +85,7 @@ x = setInterval(() => {
 .tags-container {
   background-color: white;
   padding-left: 0.2rem;
+  flex-wrap: wrap;
 }
 
 .tag {
@@ -130,7 +131,9 @@ x = setInterval(() => {
   }
 }
 
-.no-text-cursor {
-  color: white;
+.tags-input {
+  width: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 </style>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getQuestion } from "@/firebase/controllers/questions";
 import type { Question } from "@/models/Question.model";
 import { onBeforeMount, ref } from "vue";
 import { useQuestionsStore } from "@/stores/questionsStore";
@@ -7,16 +6,18 @@ import TagInput from "./TagInputComponent.vue";
 
 interface Props {
   update: boolean;
-  quesId: string;
+  ogQues: Question;
 }
 const props = withDefaults(defineProps<Props>(), {
   update: false,
-  quesId: "",
+  ogQues: () => ({} as Question),
 });
 
 interface Emits {
   // eslint-disable-next-line no-unused-vars
   (eventName: "submit", question: Question): void;
+  // eslint-disable-next-line no-unused-vars
+  (eventName: "cancel"): void;
 }
 const emit = defineEmits<Emits>();
 
@@ -33,22 +34,26 @@ const updateTags = (tags: Array<string>) => {
 const newQuestion = ref({} as Question);
 
 const handleSubmit = () => {
-  if (props.update) {
-    newQuestion.value.id = props.quesId;
-  }
+  console.log("submitting");
 
-  if (!newQuestion.value.tags) newQuestion.value.tags = [];
+  if (!newQuestion.value.tags) {
+    console.log("not tags");
+    newQuestion.value.tags = [];
+  }
 
   emit("submit", newQuestion.value);
 };
 
+const cancel = (e: Event) => {
+  e.preventDefault();
+  emit("cancel");
+};
+
 onBeforeMount(async () => {
   if (props.update) {
-    const question = await getQuestion(props.quesId);
+    oldTags.value = props.ogQues.tags;
 
-    oldTags.value = question.tags;
-
-    newQuestion.value = question;
+    newQuestion.value = { ...props.ogQues }; //remove reactivity
   }
 });
 </script>
@@ -57,10 +62,10 @@ onBeforeMount(async () => {
   <div class="form-container">
     <FormKit
       type="form"
-      submit-label="সাবমিট"
       v-model="newQuestion"
       @submit="handleSubmit"
       class="question-form"
+      :actions="false"
     >
       <FormKit
         type="text"
@@ -112,6 +117,15 @@ onBeforeMount(async () => {
         autocomplete="off"
       />
       <TagInput @updated="updateTags" :oldTags="oldTags" :tagList="tags" />
+      <div class="buttons-holder">
+        <FormKit type="submit" label="সাবমিট" />
+        <FormKit
+          type="button"
+          label="ক্যান্সেল"
+          input-class="cancel-button"
+          @click="cancel"
+        />
+      </div>
     </FormKit>
     <datalist id="categories-list">
       <option v-for="cat in categories" :key="cat" :value="cat" />
@@ -123,5 +137,20 @@ onBeforeMount(async () => {
 .form-container {
   max-width: 25em;
   margin-inline: auto;
+}
+
+.buttons-holder {
+  display: flex;
+  justify-content: space-between;
+}
+
+[data-type="button"] .cancel-button {
+  --button-color: hsl(0, 0%, 85%);
+  background-color: var(--button-color);
+  color: black;
+}
+
+[data-type="button"] .cancel-button:hover {
+  background-color: var(--button-color);
 }
 </style>

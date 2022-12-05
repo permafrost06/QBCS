@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { RouterView, useRouter } from "vue-router";
 import "@/firebase";
 import * as firebaseUser from "@/firebase/controllers/user";
-import AddButton from "./components/AddButtonComponent.vue";
 
 const router = useRouter();
 
@@ -17,7 +16,6 @@ const editMode = ref(false);
 
 <template>
   <div>
-    <AddButton />
     <RouterView class="router-view" v-slot="{ Component }">
       <template v-if="Component">
         <Suspense>

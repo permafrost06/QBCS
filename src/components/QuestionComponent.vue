@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { Question } from "@/models/Question.model";
 import { deleteQuestion } from "@/firebase/controllers/questions";
-import { ref } from "vue";
 import { isString } from "@/composables";
-import { useRouter } from "vue-router";
 import { getUid } from "@/firebase/controllers/user";
 import EditButton from "./EditButtonComponent.vue";
 
@@ -12,11 +10,12 @@ const props = defineProps<{
   editMode: boolean;
 }>();
 
-const emit = defineEmits(["update-list"]);
-
-const router = useRouter();
-
-const deleteDialog = ref(false);
+interface Emits {
+  // eslint-disable-next-line no-unused-vars
+  (eventName: "edit", id: string): void;
+  // eslint-disable-next-line no-unused-vars
+}
+const emit = defineEmits<Emits>();
 
 const printTags = (tags: string[] | string): string => {
   if (!isString(tags)) {
@@ -41,21 +40,12 @@ const isOwner = (uid: string) => {
   return false;
 };
 
-const handleEditQuestion = async () => {
-  router.push({ name: "Edit Question", params: { id: props.question.id } });
-};
-
 const handleDelete = async () => {
   await deleteQuestion(props.question.id);
-  emit("update-list");
 };
 
-const promptDelete = () => {
-  deleteDialog.value = true;
-};
-
-const cancelDelete = () => {
-  deleteDialog.value = false;
+const handleEdit = () => {
+  emit("edit", props.question.id);
 };
 </script>
 
@@ -73,6 +63,7 @@ const cancelDelete = () => {
       <EditButton
         :visible="isOwner(props.question.owner?.uid)"
         :id="props.question.id"
+        @click="handleEdit"
       />
     </div>
     <div class="text">{{ props.question.text }}</div>
@@ -80,10 +71,6 @@ const cancelDelete = () => {
     <div class="meta">
       <div class="owner">{{ props.question.owner?.name.split(" ")[0] }}</div>
       <div class="tags">{{ printTags(props.question.tags) }}</div>
-    </div>
-    <div v-if="props.editMode && isOwner(props.question.owner?.uid)">
-      <button @click="handleEditQuestion">Edit</button>
-      <button @click="promptDelete">Delete</button>
     </div>
   </div>
 </template>

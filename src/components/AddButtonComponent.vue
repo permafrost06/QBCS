@@ -1,5 +1,5 @@
 <template>
-  <RouterLink class="add-button" :to="{ name: 'Add Question' }"> + </RouterLink>
+  <span class="add-button" :to="{ name: 'Add Question' }"> + </span>
 </template>
 
 <style lang="scss">

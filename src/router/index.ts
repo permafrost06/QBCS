@@ -1,18 +1,13 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import AddQuestionView from "@/views/AddQuestionView.vue";
+import AllQuestionsView from "@/views/AllQuestionsView.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/addNew",
-      name: "Add Question",
-      component: AddQuestionView,
-    },
-    {
       path: "/",
       name: "All Questions",
-      component: () => import("@/views/AllQuestionsView.vue"),
+      component: AllQuestionsView,
     },
     {
       path: "/test",
@@ -23,12 +18,6 @@ const router = createRouter({
       path: "/login",
       name: "Log in",
       component: () => import("@/views/LoginView.vue"),
-    },
-    {
-      path: "/edit/:id",
-      name: "Edit Question",
-      component: () => import("@/views/EditQuestionView.vue"),
-      props: true,
     },
   ],
 });

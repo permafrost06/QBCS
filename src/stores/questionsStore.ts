@@ -10,13 +10,15 @@ export const useQuestionsStore = defineStore("questions", {
   }),
   actions: {
     async loadQuestions() {
-      if (this.questions.length == 0) {
-        this.questions = await getAllQuestions();
-      }
+      this.questions = await getAllQuestions();
     },
 
     getQuestions() {
       return this.questions;
+    },
+
+    getQuestion(id: string) {
+      return this.questions.find((ques) => ques.id === id);
     },
 
     getCategories() {

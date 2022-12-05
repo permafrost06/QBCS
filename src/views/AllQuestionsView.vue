@@ -5,6 +5,9 @@ import QuestionComponent from "../components/QuestionComponent.vue";
 import { useQuestionsStore } from "@/stores/questionsStore";
 import { FirebaseError } from "@firebase/util";
 import { useRouter } from "vue-router";
+import QuestionForm from "@/components/QuestionFormComponent.vue";
+import AddButton from "@/components/AddButtonComponent.vue";
+import { addQuestion, updateQuestion } from "@/firebase/controllers/questions";
 
 const router = useRouter();
 
@@ -27,12 +30,56 @@ const loadQuestions = async () => {
   allQuestions.value = questionsStore.getQuestions();
 };
 
+const showModal = ref(false);
+
+const edit = ref(false);
+const selectedQues = ref();
+
 await loadQuestions();
+
+const handleEdit = (id: string) => {
+  selectedQues.value = questionsStore.getQuestion(id);
+  edit.value = true;
+  showModal.value = true;
+};
+
+const handleAddNew = () => {
+  selectedQues.value = {};
+  edit.value = false;
+  showModal.value = true;
+};
+
+const handleSubmit = async (ques: Question) => {
+  if (edit.value === true) {
+    try {
+      //   await updateQuestion(ques);
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    try {
+      //   await addQuestion(ques);
+    } catch (error) {
+      router.push({ name: "Log in" });
+    }
+  }
+
+  loadQuestions();
+  //   showModal.value = false;
+};
 </script>
 
 <template>
   <div class="container">
     <h1>সকল প্রশ্ন</h1>
+    <AddButton @click="handleAddNew" />
+    <QuestionForm
+      v-if="showModal"
+      :update="edit"
+      :ogQues="selectedQues"
+      @submit="handleSubmit"
+      @cancel="showModal = false"
+    />
     <div class="questions-container">
       <QuestionComponent
         v-for="question in allQuestions"
@@ -40,6 +87,7 @@ await loadQuestions();
         :question="question"
         :edit-mode="props.editMode"
         @update-list="loadQuestions"
+        @edit="handleEdit"
       />
     </div>
   </div>
