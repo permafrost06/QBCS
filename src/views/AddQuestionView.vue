@@ -22,7 +22,6 @@ const handleAddQuestion = async (newQuestion: Question) => {
 </script>
 
 <template>
+  <h1 class="page-title">নতুন প্রশ্ন</h1>
   <QuestionForm @submit="handleAddQuestion" />
 </template>
-
-<style scoped></style>

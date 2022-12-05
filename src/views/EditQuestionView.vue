@@ -24,7 +24,6 @@ const handleEditQuestion = async (newQuestion: Question) => {
 </script>
 
 <template>
+  <h1 class="page-title">প্রশ্ন সংশোধন</h1>
   <QuestionForm update :quesId="id" @submit="handleEditQuestion" />
 </template>
-
-<style scoped></style>

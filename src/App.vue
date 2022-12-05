@@ -30,8 +30,7 @@ const editMode = ref(false);
 </template>
 
 <style>
-body,
-* {
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -47,5 +46,17 @@ body {
 }
 .router-view {
   margin-bottom: 5rem;
+}
+
+.page-title {
+  text-align: center;
+}
+
+.formkit-inner {
+  box-shadow: 0 0 2px hsl(252, 8%, 75%);
+}
+
+.formkit-inner > input {
+  background-color: white;
 }
 </style>
