@@ -52,13 +52,13 @@ const handleAddNew = () => {
 const handleSubmit = async (ques: Question) => {
   if (edit.value === true) {
     try {
-      //   await updateQuestion(ques);
+      await updateQuestion(ques);
     } catch (e) {
       console.log(e);
     }
   } else {
     try {
-      //   await addQuestion(ques);
+      await addQuestion(ques);
     } catch (error) {
       router.push({ name: "Log in" });
     }
