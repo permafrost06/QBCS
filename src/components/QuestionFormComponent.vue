@@ -74,12 +74,13 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="question-container">
+  <div class="form-container">
     <FormKit
       type="form"
       submit-label="সাবমিট"
       v-model="newQuestion"
       @submit="handleSubmit"
+      class="question-form"
     >
       <FormKit
         type="text"
@@ -144,12 +145,9 @@ onBeforeMount(async () => {
   </div>
 </template>
 
-<style scoped>
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 0.3rem;
+<style lang="scss">
+.form-container {
+  max-width: 25em;
+  margin-inline: auto;
 }
 </style>
