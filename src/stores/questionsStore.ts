@@ -23,6 +23,18 @@ export const useQuestionsStore = defineStore("questions", {
       return Array.from(new Set(this.questions.map((ques) => ques.category)));
     },
 
+    getTags() {
+      const tags = [];
+
+      for (const ques of this.questions) {
+        for (const tag of ques.tags) {
+          tags.push(tag);
+        }
+      }
+
+      return Array.from(new Set(tags));
+    },
+
     getTestQuestions(num_questions: number) {
       return selectRandomElements(this.questions, num_questions).map(
         (question) => {
