@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Question } from "@/models/Question.model";
 import { deleteQuestion } from "@/firebase/controllers/questions";
-import { isString } from "@/composables";
 import { getUid } from "@/firebase/controllers/user";
 import EditButton from "./EditButtonComponent.vue";
 
@@ -17,20 +16,10 @@ interface Emits {
 }
 const emit = defineEmits<Emits>();
 
-const printTags = (tags: string[] | string): string => {
-  if (!isString(tags)) {
-    if (tags) {
-      const tagString = tags.join(", ");
-
-      const length = tagString.length;
-
-      // this requires a better fix
-      if (tagString[length - 1] === " ") {
-        return tagString.substring(0, length - 2);
-      } else {
-        return tagString;
-      }
-    }
+const printTags = (tags: string[]): string => {
+  if (tags) {
+    const tagString = tags.join(", ");
+    return tagString;
   }
   return "";
 };
