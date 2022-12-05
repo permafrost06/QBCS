@@ -41,7 +41,7 @@ const handleSubmit = () => {
   emit("submit", newQuestion.value);
 };
 
-const cancel = (e: Event) => {
+const sendCancel = (e: Event) => {
   e.preventDefault();
   emit("cancel");
 };
@@ -120,7 +120,7 @@ onBeforeMount(async () => {
           type="button"
           label="ক্যান্সেল"
           input-class="cancel-button"
-          @click="cancel"
+          @click="sendCancel"
         />
       </div>
     </FormKit>
