@@ -4,6 +4,7 @@ import type { Question } from "@/models/Question.model";
 import type { FormKitNode } from "@formkit/core";
 import { isString } from "@/composables";
 import { onBeforeMount, ref } from "vue";
+import { useQuestionsStore } from "@/stores/questionsStore";
 
 interface Props {
   update: boolean;
@@ -19,6 +20,10 @@ interface Emits {
   (eventName: "submit", question: Question): void;
 }
 const emit = defineEmits<Emits>();
+
+const questionsStore = useQuestionsStore();
+
+const categories = questionsStore.getCategories();
 
 const validateTags = ({ value }: FormKitNode) => {
   if (value) {
@@ -118,6 +123,7 @@ onBeforeMount(async () => {
         validation="required"
         :validation-messages="{ required: 'ক্যাটাগরি ফিল্ডটি বাধ্যতামূলক' }"
         list="categories-list"
+        autocomplete="off"
       />
       <FormKit
         type="text"
@@ -133,11 +139,7 @@ onBeforeMount(async () => {
       />
     </FormKit>
     <datalist id="categories-list">
-      <option value="Chocolate" />
-      <option value="Coconut" />
-      <option value="Mint" />
-      <option value="Strawberry" />
-      <option value="Vanilla" />
+      <option v-for="cat in categories" :key="cat" :value="cat" />
     </datalist>
   </div>
 </template>

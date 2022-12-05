@@ -19,6 +19,10 @@ export const useQuestionsStore = defineStore("questions", {
       return this.questions;
     },
 
+    getCategories() {
+      return Array.from(new Set(this.questions.map((ques) => ques.category)));
+    },
+
     getTestQuestions(num_questions: number) {
       return selectRandomElements(this.questions, num_questions).map(
         (question) => {
