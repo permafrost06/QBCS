@@ -105,7 +105,7 @@ h1 {
 
   margin: 1rem 7rem;
 
-  @media (width <= 515px) {
+  @media (max-width: 515px) {
     margin: 1rem;
   }
 }
