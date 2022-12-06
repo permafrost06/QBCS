@@ -73,13 +73,15 @@ const handleSubmit = async (ques: Question) => {
   <div class="container">
     <h1>সকল প্রশ্ন</h1>
     <AddButton @click="handleAddNew" />
-    <QuestionForm
-      v-if="showModal"
-      :update="edit"
-      :ogQues="selectedQues"
-      @submit="handleSubmit"
-      @cancel="showModal = false"
-    />
+    <transition name="modal">
+      <QuestionForm
+        v-if="showModal"
+        :update="edit"
+        :ogQues="selectedQues"
+        @submit="handleSubmit"
+        @cancel="showModal = false"
+      />
+    </transition>
     <div class="questions-container">
       <QuestionComponent
         v-for="question in allQuestions"
@@ -93,7 +95,7 @@ const handleSubmit = async (ques: Question) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 h1 {
   text-align: center;
 }
@@ -109,4 +111,15 @@ h1 {
     margin: 1rem;
   }
 }
+
+.modal-enter-from,
+.modal-leave-to {
+  transform: translateX(100vw);
+}
+
+// .modal-enter-active .modal-container,
+// .modal-leave-active .modal-container {
+//   -webkit-transform: scale(1.1);
+//   transform: scale(1.1);
+// }
 </style>

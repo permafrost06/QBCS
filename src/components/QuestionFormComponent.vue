@@ -132,8 +132,29 @@ onBeforeMount(async () => {
 
 <style lang="scss">
 .form-container {
-  max-width: 25em;
-  margin-inline: auto;
+  position: fixed;
+  inset: 0 0 0 0;
+  z-index: 999;
+
+  max-height: 100vh;
+
+  overflow-y: scroll;
+
+  background-color: hsl(0, 0%, 100%);
+
+  display: flex;
+  justify-content: center;
+
+  & > * {
+    flex-grow: 1;
+    max-width: 25rem;
+  }
+
+  transition: all 0.3s ease;
+
+  @media (min-width: 900px) {
+    left: 60vw;
+  }
 }
 
 .buttons-holder {
