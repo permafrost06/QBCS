@@ -30,7 +30,8 @@ const editMode = ref(false);
 <style>
 @font-face {
   font-family: "SolaimanLipi";
-  src: url("fonts/SolaimanLipi.ttf");
+  src: url("fonts/SolaimanLipi.woff2") format("woff2"),
+    url("fonts/SolaimanLipi.woff") format("woff");
 }
 
 body {
