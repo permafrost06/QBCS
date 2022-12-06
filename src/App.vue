@@ -28,16 +28,15 @@ const editMode = ref(false);
 </template>
 
 <style>
-@font-face {
+/* @font-face {
   font-family: "SolaimanLipi";
   src: url("fonts/SolaimanLipi.woff2") format("woff2"),
     url("fonts/SolaimanLipi.woff") format("woff");
-}
+} */
 
 body {
-  font-family: "SolaimanLipi", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 body {
