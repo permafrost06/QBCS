@@ -40,18 +40,28 @@ await loadQuestions();
 const handleEdit = (id: string) => {
   selectedQues.value = questionsStore.getQuestion(id);
   edit.value = true;
+  openModal();
+};
+
+const openModal = () => {
   showModal.value = true;
+  document.body.style.overflow = "hidden";
+};
+
+const closeModal = () => {
+  showModal.value = false;
+  document.body.style.overflow = "auto";
 };
 
 const handleAddNew = () => {
   if (showModal.value) {
-    showModal.value = false;
+    closeModal();
     return;
   }
 
   selectedQues.value = {};
   edit.value = false;
-  showModal.value = true;
+  openModal();
 };
 
 const handleSubmit = async (ques: Question) => {
@@ -70,7 +80,7 @@ const handleSubmit = async (ques: Question) => {
   }
 
   loadQuestions();
-  showModal.value = false;
+  closeModal();
 };
 </script>
 
