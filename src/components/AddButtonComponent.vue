@@ -1,5 +1,5 @@
 <template>
-  <span class="add-button" :to="{ name: 'Add Question' }"> + </span>
+  <span class="add-button"> + </span>
 </template>
 
 <style lang="scss">
