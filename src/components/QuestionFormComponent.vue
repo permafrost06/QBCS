@@ -158,7 +158,19 @@ onBeforeMount(async () => {
     max-width: 25rem;
   }
 
-  @media (min-width: 900px) {
+  $break-1: 1000px;
+  $break-2: 800px;
+  $break-3: 600px;
+
+  @media (min-width: $break-3) {
+    left: 40vw;
+  }
+
+  @media (min-width: $break-2) {
+    left: 50vw;
+  }
+
+  @media (min-width: $break-1) {
     left: 60vw;
   }
 
