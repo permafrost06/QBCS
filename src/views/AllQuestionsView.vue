@@ -44,6 +44,11 @@ const handleEdit = (id: string) => {
 };
 
 const handleAddNew = () => {
+  if (showModal.value) {
+    showModal.value = false;
+    return;
+  }
+
   selectedQues.value = {};
   edit.value = false;
   showModal.value = true;
@@ -72,14 +77,13 @@ const handleSubmit = async (ques: Question) => {
 <template>
   <div class="container">
     <h1>সকল প্রশ্ন</h1>
-    <AddButton @click="handleAddNew" />
+    <AddButton @click="handleAddNew" :open="showModal" />
     <transition name="modal">
       <QuestionForm
         v-if="showModal"
         :update="edit"
         :ogQues="selectedQues"
         @submit="handleSubmit"
-        @cancel="showModal = false"
       />
     </transition>
     <div class="questions-container">

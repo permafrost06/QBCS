@@ -1,13 +1,19 @@
+<script setup lang="ts">
+const props = defineProps<{
+  open: boolean;
+}>();
+</script>
+
 <template>
-  <span class="add-button"> + </span>
+  <span :class="['add-button', { 'button-open': props.open }]"> + </span>
 </template>
 
 <style lang="scss">
 .add-button {
   position: fixed;
   bottom: 1rem;
-  right: 1rem;
-  z-index: 999;
+  right: 2rem;
+  z-index: 9999;
 
   text-align: center;
   display: inline-block;
@@ -31,5 +37,9 @@
   &:hover {
     box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, 0.3);
   }
+}
+
+.button-open {
+  rotate: 45deg;
 }
 </style>

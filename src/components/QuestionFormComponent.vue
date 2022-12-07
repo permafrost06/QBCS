@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 interface Emits {
   // eslint-disable-next-line no-unused-vars
   (eventName: "submit", question: Question): void;
-  // eslint-disable-next-line no-unused-vars
-  (eventName: "cancel"): void;
 }
 const emit = defineEmits<Emits>();
 
@@ -39,11 +37,6 @@ const handleSubmit = () => {
   }
 
   emit("submit", newQuestion.value);
-};
-
-const sendCancel = (e: Event) => {
-  e.preventDefault();
-  emit("cancel");
 };
 
 onBeforeMount(async () => {
@@ -120,12 +113,6 @@ onBeforeMount(async () => {
           <TagInput @updated="updateTags" :oldTags="oldTags" :tagList="tags" />
           <div class="buttons-holder">
             <FormKit type="submit" label="সাবমিট" />
-            <FormKit
-              type="button"
-              label="ক্যান্সেল"
-              input-class="cancel-button"
-              @click="sendCancel"
-            />
           </div>
         </FormKit>
         <datalist id="categories-list">
