@@ -114,12 +114,10 @@ h1 {
 
 .modal-enter-from,
 .modal-leave-to {
-  transform: translateX(100vw);
-}
+  backdrop-filter: blur(10px) opacity(0);
 
-// .modal-enter-active .modal-container,
-// .modal-leave-active .modal-container {
-//   -webkit-transform: scale(1.1);
-//   transform: scale(1.1);
-// }
+  .form-container {
+    transform: translateX(100vw);
+  }
+}
 </style>

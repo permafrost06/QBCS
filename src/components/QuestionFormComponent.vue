@@ -56,85 +56,102 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="form-container">
-    <FormKit
-      type="form"
-      v-model="newQuestion"
-      @submit="handleSubmit"
-      class="question-form"
-      :actions="false"
-    >
-      <FormKit
-        type="text"
-        name="text"
-        label="প্রশ্ন"
-        validation="required"
-        :validation-messages="{ required: 'প্রশ্ন ফিল্ডটি বাধ্যতামূলক' }"
-        autocomplete="off"
-      />
-      <FormKit
-        type="text"
-        name="answer"
-        label="উত্তর"
-        validation="required"
-        :validation-messages="{ required: 'উত্তর ফিল্ডটি বাধ্যতামূলক' }"
-        autocomplete="off"
-      />
-      <FormKit
-        type="text"
-        name="opt1"
-        label="অপশন ১"
-        validation="required"
-        :validation-messages="{ required: 'অপশন ১ ফিল্ডটি বাধ্যতামূলক' }"
-        autocomplete="off"
-      />
-      <FormKit
-        type="text"
-        name="opt2"
-        label="অপশন ২"
-        validation="required"
-        :validation-messages="{ required: 'অপশন ২ ফিল্ডটি বাধ্যতামূলক' }"
-        autocomplete="off"
-      />
-      <FormKit
-        type="text"
-        name="opt3"
-        label="অপশন ৩"
-        validation="required"
-        :validation-messages="{ required: 'অপশন ৩ ফিল্ডটি বাধ্যতামূলক' }"
-        autocomplete="off"
-      />
-      <FormKit
-        type="text"
-        name="category"
-        label="ক্যাটাগরি"
-        validation="required"
-        :validation-messages="{ required: 'ক্যাটাগরি ফিল্ডটি বাধ্যতামূলক' }"
-        list="categories-list"
-        autocomplete="off"
-      />
-      <TagInput @updated="updateTags" :oldTags="oldTags" :tagList="tags" />
-      <div class="buttons-holder">
-        <FormKit type="submit" label="সাবমিট" />
+  <div class="modal-container">
+    <transition name="form">
+      <div class="form-container">
+        <h1 v-if="props.update">প্রশ্ন সম্পাদনা</h1>
+        <h1 v-else>নতুন প্রশ্ন</h1>
         <FormKit
-          type="button"
-          label="ক্যান্সেল"
-          input-class="cancel-button"
-          @click="sendCancel"
-        />
+          type="form"
+          v-model="newQuestion"
+          @submit="handleSubmit"
+          class="question-form"
+          :actions="false"
+        >
+          <FormKit
+            type="text"
+            name="text"
+            label="প্রশ্ন"
+            validation="required"
+            :validation-messages="{ required: 'প্রশ্ন ফিল্ডটি বাধ্যতামূলক' }"
+            autocomplete="off"
+          />
+          <FormKit
+            type="text"
+            name="answer"
+            label="উত্তর"
+            validation="required"
+            :validation-messages="{ required: 'উত্তর ফিল্ডটি বাধ্যতামূলক' }"
+            autocomplete="off"
+          />
+          <FormKit
+            type="text"
+            name="opt1"
+            label="অপশন ১"
+            validation="required"
+            :validation-messages="{ required: 'অপশন ১ ফিল্ডটি বাধ্যতামূলক' }"
+            autocomplete="off"
+          />
+          <FormKit
+            type="text"
+            name="opt2"
+            label="অপশন ২"
+            validation="required"
+            :validation-messages="{ required: 'অপশন ২ ফিল্ডটি বাধ্যতামূলক' }"
+            autocomplete="off"
+          />
+          <FormKit
+            type="text"
+            name="opt3"
+            label="অপশন ৩"
+            validation="required"
+            :validation-messages="{ required: 'অপশন ৩ ফিল্ডটি বাধ্যতামূলক' }"
+            autocomplete="off"
+          />
+          <FormKit
+            type="text"
+            name="category"
+            label="ক্যাটাগরি"
+            validation="required"
+            :validation-messages="{ required: 'ক্যাটাগরি ফিল্ডটি বাধ্যতামূলক' }"
+            list="categories-list"
+            autocomplete="off"
+          />
+          <TagInput @updated="updateTags" :oldTags="oldTags" :tagList="tags" />
+          <div class="buttons-holder">
+            <FormKit type="submit" label="সাবমিট" />
+            <FormKit
+              type="button"
+              label="ক্যান্সেল"
+              input-class="cancel-button"
+              @click="sendCancel"
+            />
+          </div>
+        </FormKit>
+        <datalist id="categories-list">
+          <option v-for="cat in categories" :key="cat" :value="cat" />
+        </datalist>
       </div>
-    </FormKit>
-    <datalist id="categories-list">
-      <option v-for="cat in categories" :key="cat" :value="cat" />
-    </datalist>
+    </transition>
   </div>
 </template>
 
 <style lang="scss">
-.form-container {
+.modal-container {
   position: fixed;
   inset: 0 0 0 0;
   z-index: 999;
+
+  max-height: 100vh;
+
+  transition: backdrop-filter 0.3s ease;
+
+  backdrop-filter: blur(10px) opacity(1);
+}
+
+.form-container {
+  position: absolute;
+  inset: 0 0 0 0;
 
   max-height: 100vh;
 
@@ -143,18 +160,22 @@ onBeforeMount(async () => {
   background-color: hsl(0, 0%, 100%);
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  transition: transform 0.3s ease;
 
   & > * {
-    flex-grow: 1;
+    flex-basis: 90%;
     max-width: 25rem;
   }
-
-  transition: all 0.3s ease;
 
   @media (min-width: 900px) {
     left: 60vw;
   }
+
+  padding: 2rem 0;
 }
 
 .buttons-holder {
