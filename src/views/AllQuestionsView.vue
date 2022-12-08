@@ -98,12 +98,13 @@ const handleSubmit = async (ques: Question) => {
     </transition>
     <div class="questions-container">
       <QuestionComponent
-        v-for="question in allQuestions"
+        v-for="(question, idx) in allQuestions"
         :key="question.id"
         :question="question"
         :edit-mode="props.editMode"
         @update-list="loadQuestions"
         @edit="handleEdit"
+        :tabindex="idx"
       />
     </div>
   </div>

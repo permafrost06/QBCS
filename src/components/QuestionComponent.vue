@@ -29,25 +29,18 @@ const isOwner = (uid: string) => {
   return false;
 };
 
-const handleDelete = async () => {
-  await deleteQuestion(props.question.id);
-};
-
 const handleEdit = () => {
   emit("edit", props.question.id);
+};
+
+const unfocus = (e: MouseEvent) => {
+  if (e.target) (e.target as HTMLDivElement).blur();
 };
 </script>
 
 <template>
-  <div class="question" :key="question.id">
-    <div
-      class="category"
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-      "
-    >
+  <div class="question" :key="question.id" @mouseleave="unfocus">
+    <div class="category">
       <span class="category-text">{{ props.question.category }}</span>
       <EditButton
         :visible="isOwner(props.question.owner?.uid)"
@@ -79,7 +72,8 @@ const handleEdit = () => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  &:hover {
+  &:hover,
+  &:focus {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
 
@@ -91,6 +85,10 @@ const handleEdit = () => {
   }
 
   .category {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
     .category-text {
       font-size: 0.8rem;
       border: 1px solid hsl(0, 0%, 95%);
