@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import type { Question } from "@/models/Question.model";
-import { deleteQuestion } from "@/firebase/controllers/questions";
 import { getUid } from "@/firebase/controllers/user";
 import EditButton from "./EditButtonComponent.vue";
 
 const props = defineProps<{
   question: Question;
-  editMode: boolean;
 }>();
 
 interface Emits {
   // eslint-disable-next-line no-unused-vars
   (eventName: "edit", id: string): void;
-  // eslint-disable-next-line no-unused-vars
 }
 const emit = defineEmits<Emits>();
 
@@ -67,8 +64,6 @@ const unfocus = (e: MouseEvent) => {
 
   background-color: var(--color);
 
-  position: relative;
-
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -110,20 +105,6 @@ const unfocus = (e: MouseEvent) => {
     text-align: right;
     font-size: 0.8rem;
     color: hsl(0, 0%, 40%);
-  }
-
-  .delete-overlay {
-    position: absolute;
-    background-color: hsla(0, 100%, 63%, 0.7);
-    inset: 0 0 0 0;
-    border-radius: 0.25rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 500;
-    font-size: 1.2rem;
   }
 }
 </style>

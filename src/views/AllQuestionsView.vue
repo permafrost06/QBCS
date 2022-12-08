@@ -13,9 +13,10 @@ const router = useRouter();
 
 const questionsStore = useQuestionsStore();
 
-const props = defineProps<{ editMode: boolean }>();
-
 const allQuestions = ref([] as Question[]);
+const edit = ref(false);
+const selectedQues = ref();
+const showModal = ref(false);
 
 const loadQuestions = async () => {
   try {
@@ -30,19 +31,9 @@ const loadQuestions = async () => {
   allQuestions.value = questionsStore.getQuestions();
 };
 
-const showModal = ref(false);
-
-const edit = ref(false);
-const selectedQues = ref();
-
 await loadQuestions();
 
-const handleEdit = (id: string) => {
-  selectedQues.value = questionsStore.getQuestion(id);
-  edit.value = true;
-  openModal();
-};
-
+// handle modal events
 const openModal = () => {
   showModal.value = true;
   document.body.style.overflow = "hidden";
@@ -51,6 +42,13 @@ const openModal = () => {
 const closeModal = () => {
   showModal.value = false;
   document.body.style.overflow = "auto";
+};
+
+// handle button events
+const handleEdit = (id: string) => {
+  selectedQues.value = questionsStore.getQuestion(id);
+  edit.value = true;
+  openModal();
 };
 
 const handleAddNew = () => {
@@ -64,6 +62,7 @@ const handleAddNew = () => {
   openModal();
 };
 
+// handle form events
 const handleSubmit = async (ques: Question) => {
   if (edit.value === true) {
     try {
@@ -101,8 +100,6 @@ const handleSubmit = async (ques: Question) => {
         v-for="(question, idx) in allQuestions"
         :key="question.id"
         :question="question"
-        :edit-mode="props.editMode"
-        @update-list="loadQuestions"
         @edit="handleEdit"
         :tabindex="idx"
       />

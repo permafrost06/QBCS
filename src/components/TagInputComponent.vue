@@ -72,9 +72,6 @@ onMounted(() => (tags.value = [...props.oldTags]));
         <button @click="removeTag($event, idx)">x</button>
       </div>
     </template>
-    <!-- <template #suffix>
-      <FormKit type="button" label="এ্যাড" />
-    </template> -->
   </FormKit>
   <datalist id="tags-list">
     <option v-for="tag in props.tagList" :key="tag" :value="tag" />
@@ -121,7 +118,7 @@ onMounted(() => (tags.value = [...props.oldTags]));
   }
 }
 
-// does not work in firefox at the time of writing
+// does not work in firefox, safari at the time of writing
 .focused:has(+ .no-text-cursor:focus) {
   background-color: hsl(213, 100%, 50%);
   color: white;

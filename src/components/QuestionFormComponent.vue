@@ -181,14 +181,4 @@ onBeforeMount(async () => {
   display: flex;
   justify-content: space-between;
 }
-
-[data-type="button"] .cancel-button {
-  --button-color: hsl(0, 0%, 85%);
-  background-color: var(--button-color);
-  color: black;
-}
-
-[data-type="button"] .cancel-button:hover {
-  background-color: var(--button-color);
-}
 </style>

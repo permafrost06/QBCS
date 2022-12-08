@@ -1,39 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { RouterView, useRouter } from "vue-router";
+import { RouterView } from "vue-router";
 import "@/firebase";
-import * as firebaseUser from "@/firebase/controllers/user";
-
-const router = useRouter();
-
-const editMode = ref(false);
-
-// const logout = () => {
-//   firebaseUser.logOut();
-//   router.push({ name: "Log in" });
-// };
 </script>
 
 <template>
-  <div>
-    <RouterView class="router-view" v-slot="{ Component }">
-      <template v-if="Component">
-        <Suspense>
-          <component :edit-mode="editMode" :is="Component"></component>
-          <template #fallback> Loading... </template>
-        </Suspense>
-      </template>
-    </RouterView>
-  </div>
+  <RouterView class="router-view" v-slot="{ Component }">
+    <template v-if="Component">
+      <Suspense>
+        <component :is="Component"></component>
+        <template #fallback> Loading... </template>
+      </Suspense>
+    </template>
+  </RouterView>
 </template>
 
 <style>
-/* @font-face {
-  font-family: "SolaimanLipi";
-  src: url("fonts/SolaimanLipi.woff2") format("woff2"),
-    url("fonts/SolaimanLipi.woff") format("woff");
-} */
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -48,6 +29,7 @@ body {
 *::after {
   margin: 0;
 }
+
 .router-view {
   margin-bottom: 5rem;
 }
