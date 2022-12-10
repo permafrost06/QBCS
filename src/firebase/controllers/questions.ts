@@ -6,6 +6,8 @@ import {
     deleteDoc,
     getDoc,
     setDoc,
+    serverTimestamp,
+    Timestamp,
 } from "firebase/firestore";
 import * as firebaseUser from "@/firebase/controllers/user";
 import { db } from "@/firebase";
@@ -16,6 +18,8 @@ export const addQuestion = async (question: Question) => {
         uid: firebaseUser.getUid(),
         name: firebaseUser.getName(),
     };
+
+    question.timestamp = serverTimestamp() as Timestamp;
 
     try {
         const docRef = await addDoc(collection(db, "questions"), question);

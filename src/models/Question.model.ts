@@ -1,3 +1,5 @@
+import type { Timestamp } from "@firebase/firestore";
+
 export interface Question {
     id: string;
     text: string;
@@ -11,4 +13,5 @@ export interface Question {
     };
     category: string;
     tags: Array<string>;
+    timestamp?: Timestamp;
 }
