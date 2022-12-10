@@ -5,57 +5,60 @@ import { selectRandomElements, shuffleArray } from "@/composables";
 import type { TestQuestion } from "@/models/TestQuestion.model";
 
 export const useQuestionsStore = defineStore("questions", {
-  state: () => ({
-    questions: [] as Question[],
-  }),
-  actions: {
-    async loadQuestions() {
-      this.questions = await getAllQuestions();
+    state: () => ({
+        questions: [] as Question[],
+    }),
+    actions: {
+        async loadQuestions() {
+            this.questions = await getAllQuestions();
+        },
+
+        getQuestions() {
+            return this.questions;
+        },
+
+        getQuestion(id: string) {
+            return this.questions.find((ques) => ques.id === id);
+        },
+
+        getCategories() {
+            return Array.from(
+                new Set(this.questions.map((ques) => ques.category))
+            );
+        },
+
+        getTags() {
+            const tags = [];
+
+            for (const ques of this.questions) {
+                for (const tag of ques.tags) {
+                    tags.push(tag);
+                }
+            }
+
+            return Array.from(new Set(tags));
+        },
+
+        getTestQuestions(num_questions: number) {
+            return selectRandomElements(this.questions, num_questions).map(
+                (question) => {
+                    return {
+                        id: question.id,
+                        text: question.text,
+                        options: shuffleArray([
+                            question.answer,
+                            question.opt1,
+                            question.opt2,
+                            question.opt3,
+                        ]),
+                    } as TestQuestion;
+                }
+            );
+        },
+
+        getAnswer(id: string) {
+            return this.questions.filter((question) => question.id === id)[0]
+                .answer;
+        },
     },
-
-    getQuestions() {
-      return this.questions;
-    },
-
-    getQuestion(id: string) {
-      return this.questions.find((ques) => ques.id === id);
-    },
-
-    getCategories() {
-      return Array.from(new Set(this.questions.map((ques) => ques.category)));
-    },
-
-    getTags() {
-      const tags = [];
-
-      for (const ques of this.questions) {
-        for (const tag of ques.tags) {
-          tags.push(tag);
-        }
-      }
-
-      return Array.from(new Set(tags));
-    },
-
-    getTestQuestions(num_questions: number) {
-      return selectRandomElements(this.questions, num_questions).map(
-        (question) => {
-          return {
-            id: question.id,
-            text: question.text,
-            options: shuffleArray([
-              question.answer,
-              question.opt1,
-              question.opt2,
-              question.opt3,
-            ]),
-          } as TestQuestion;
-        }
-      );
-    },
-
-    getAnswer(id: string) {
-      return this.questions.filter((question) => question.id === id)[0].answer;
-    },
-  },
 });
