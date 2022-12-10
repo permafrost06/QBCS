@@ -162,16 +162,11 @@ onBeforeMount(async () => {
 
     background-color: hsl(0, 0%, 100%);
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-
     transition: transform 0.3s ease;
 
-    & > * {
-        flex-basis: 90%;
-        max-width: 25rem;
+    form {
+        max-width: 25em;
+        margin-inline: auto;
     }
 
     $break-1: 1000px;
@@ -190,7 +185,7 @@ onBeforeMount(async () => {
         left: 60vw;
     }
 
-    padding: 2rem 0;
+    padding: 2rem 3rem;
 }
 
 .buttons-holder {
